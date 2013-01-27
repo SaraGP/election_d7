@@ -5,36 +5,6 @@
  */
 
 /**
- * Implements hook_views_default_views_alter().
- */
-function election_fptp_views_default_views_alter(&$views) {
-  // Add a new display to the View used for the list of election posts.
-  if (isset($views['election_posts'])) {
-    $view = $views['election_posts'];
-    if (!isset($view->display['embed_fptp'])) {
-      require_once 'embed_fptp_view_display.inc';
-    }
-  }
-}
-
-/**
- * Implements hook_ENTITY_view_alter().
- */
-function election_fptp_election_view_alter(&$build) {
-  // Show the right Views display on FPTP elections.
-  // See election_fptp_views_default_views_alter().
-  $election = $build['#election'];
-  if ($election->type == 'fptp' && $build['#view_mode'] == 'full') {
-    $posts_name = election_get_post_name($election->type, TRUE);
-    $build['posts'] = array(
-      '#prefix' => '<div class="election-posts"><h2>' . drupal_ucfirst(check_plain($posts_name)) . '</h2>',
-      '#markup' => views_embed_view('election_posts', 'embed_fptp', $election->election_id),
-      '#suffix' => '</div>',
-    );
-  }
-}
-
-/**
  * Form modifying function - voting form (election-post/%election_post/vote).
  */
 function election_fptp_vote_form(&$form, &$form_state) {

@@ -1,0 +1,138 @@
+<?php
+/**
+ * @file
+ * Primary module file for the election_fptp module.
+ */
+
+/**
+ * Implements hook_views_default_views_alter().
+ */
+function election_fptp_views_default_views_alter(&$views) {
+  // Add a new display to the View used for the list of election posts.
+  if (isset($views['election_posts'])) {
+    $view = $views['election_posts'];
+    if (!isset($view->display['embed_fptp'])) {
+      require_once 'embed_fptp_view_display.inc';
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_view_alter().
+ */
+function election_fptp_election_view_alter(&$build) {
+  // Show the right Views display on FPTP elections.
+  // See election_fptp_views_default_views_alter().
+  $election = $build['#election'];
+  if ($election->type == 'fptp' && $build['#view_mode'] == 'full') {
+    $posts_name = election_get_post_name($election->type, TRUE);
+    $build['posts'] = array(
+      '#prefix' => '<div class="election-posts"><h2>' . drupal_ucfirst(check_plain($posts_name)) . '</h2>',
+      '#markup' => views_embed_view('election_posts', 'embed_fptp', $election->election_id),
+      '#suffix' => '</div>',
+    );
+  }
+}
+
+/**
+ * Form modifying function - voting form (election-post/%election_post/vote).
+ */
+function election_fptp_vote_form(&$form, &$form_state) {
+
+  $post = $form_state['post'];
+  $election = $post->election;
+
+  // Load candidates.
+  $candidates = election_candidate_load_by_post($post, array(ELECTION_CANDIDATE_HOPEFUL), TRUE, 'RAND()');
+  $form_state['candidates'] = $candidates;
+
+  $num_candidates = count($candidates);
+  $form_state['num_candidates'] = $num_candidates;
+
+  if ($num_candidates == 0) {
+    drupal_set_message(t('Voting is currently closed: there are no published candidates standing for this @post.', array('@post' => election_get_post_name($election->type))), 'warning', FALSE);
+    $form['#disabled'] = TRUE;
+    drupal_goto(election_post_uri_path($post));
+  }
+
+  $post_name = election_get_post_name($election->type);
+
+  $form['post_help'] = array('#type' => 'container');
+
+  $form['post_help']['nums'] = array(
+    '#markup' => t(
+      'The following candidates are standing for the @post <a href="@post_url">%post_title</a>.',
+      array(
+        '@post' => $post_name,
+        '%post_title' => $post->title,
+        '@post_url' => url(election_post_uri_path($post)),
+      )
+    ),
+  );
+
+  $form['ballot_paper'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Your ballot paper'),
+    '#attributes' => array('class' => array('election-ballot-paper')),
+    '#description' => t('Please select the candidate you wish to vote for.'),
+  );
+
+  if (count($candidates) > 1) {
+    $form['ballot_paper']['#description'] .= ' ' . t('Candidates are displayed in a random order.');
+  }
+
+  foreach ($candidates as $candidate) {
+    $candidate_options[$candidate->candidate_id] = theme('election_candidate_full_name', array('candidate' => $candidate));
+  }
+
+  $form['ballot_paper']['candidate'] = array(
+    '#type' => 'radios',
+    '#options' => $candidate_options,
+    '#required' => TRUE,
+  );
+
+  $form['buttons']['clear_form'] = array(
+    '#type' => 'link',
+    '#title' => 'Clear form',
+    '#href' => $_GET['q'],
+  );
+
+  $form['#validate'] = array('election_fptp_vote_form_validate');
+
+}
+
+/**
+ * Validate the voting form.
+ */
+function election_fptp_vote_form_validate($form, &$form_state) {
+
+  // Add 'candidate' to $form_state (so it's available for later).
+  $form_state['candidate'] = $form_state['values']['candidate'];
+
+}
+
+
+/**
+ * Implements hook_election_vote_ELECTION_TYPE_save().
+ *
+ * Save votes for an FPTP election.
+ */
+function election_fptp_election_vote_fptp_save($ballot_id, $post, $vote_form, $vote_form_state) {
+
+  $selected_candidate_id = $vote_form_state['candidate'];
+
+  $vote_entry = array(
+    'ballot_id' => $ballot_id,
+    'election_id' => $post->election_id,
+    'post_id' => $post->post_id,
+    'candidate_id' => $selected_candidate_id,
+  );
+
+  // Note the whole of this function is inside a DB transaction.
+  $success = db_insert('election_vote')
+    ->fields($vote_entry)
+    ->execute();
+
+  return $success ? TRUE : FALSE;
+
+}

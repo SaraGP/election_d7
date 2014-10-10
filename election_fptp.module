@@ -13,7 +13,7 @@ function election_fptp_vote_form(&$form, &$form_state) {
   $election = $post->election;
 
   // Load candidates.
-  $candidates = election_candidate_load_by_post($post, array(ELECTION_CANDIDATE_HOPEFUL), TRUE, 'RAND()');
+  $candidates = election_candidate_load_by_post($post, array(ELECTION_CANDIDATE_HOPEFUL));
   $form_state['candidates'] = $candidates;
 
   if (!count($candidates)) {
@@ -26,33 +26,42 @@ function election_fptp_vote_form(&$form, &$form_state) {
     '#type' => 'item',
     '#title' => drupal_ucfirst(election_get_post_name($election->type)),
     '#markup' => t('@title (!view details)', array(
-      '@title' => $post->title,
-      '!view details' => l(t('view details'), election_post_uri_path($post)),
-    )),
+        '@title' => $post->title,
+        '!view details' => l(t('view details'), election_post_uri_path($post)),
+      )),
   );
 
-  $form['help'] = array(
-    '#prefix' => '<p>',
-    '#markup' =>  t('Please select your preferred candidate.'),
-    '#suffix' => '</p>',
+  $form['ballot_paper'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Your ballot paper'),
+    '#attributes' => array('class' => array('election-ballot-paper')),
+    '#description' => t('Please select your preferred candidate from the list.'),
   );
 
   if (count($candidates) > 1) {
-    $form['help']['#markup'] .= ' ' . t('Candidates are displayed in a random order.');
+    $form['ballot_paper']['#description'] .= ' ' . t('Candidates are displayed in a random order.');
   }
 
   foreach ($candidates as $candidate) {
-    $candidate_options[$candidate->candidate_id] = theme('election_candidate_full_name', array('candidate' => $candidate));
+    $candidate_options[$candidate->candidate_id] = election_candidate_get_name($candidate);
   }
 
-  $form['candidate_id'] = array(
-    '#type' => 'select',
+  $form_type = isset($post->settings['vote_form_type']) ? $post->settings['vote_form_type'] : 'radios';
+  if (!in_array($form_type, array('radios', 'select'))) {
+    $form_type = 'radios';
+  }
+
+  $form['ballot_paper']['candidate_id'] = array(
+    '#type' => $form_type,
+    '#title' => t('Candidate'),
     '#options' => $candidate_options,
     '#required' => TRUE,
   );
 
   $form['#validate'][] = 'election_fptp_vote_form_validate';
 
+
+  // @todo improve the confirm step
 }
 
 /**
@@ -64,7 +73,6 @@ function election_fptp_vote_form_validate($form, &$form_state) {
   $form_state['candidate_id'] = $form_state['values']['candidate_id'];
 
 }
-
 
 /**
  * Implements hook_election_vote_ELECTION_TYPE_save().
@@ -85,5 +93,89 @@ function election_fptp_election_vote_fptp_save($ballot_id, $post, $vote_form, $v
     ->execute();
 
   return $success ? TRUE : FALSE;
+
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Add FPTP-specific settings to the election post edit form.
+ */
+function election_fptp_form_election_post_form_alter(&$form, &$form_state) {
+
+  $election = $form_state['election'];
+  if ($election->type != 'fptp') {
+    return;
+  }
+
+  // The number of vacancies can only be 1.
+  $form['candidates_nominations']['vacancy_count']['#type'] = 'value';
+  $form['candidates_nominations']['vacancy_count']['#value'] = 1;
+
+  $form['voting']['settings_vote_form_type'] = array(
+    '#type' => 'select',
+    '#title' => t('Ballot form type'),
+    '#options' => array(
+      'radios' => t('Radio buttons'),
+      'select' => t('Drop-down select options'),
+    ),
+    '#default_value' => isset($post->settings['vote_form_type']) ? $post->settings['vote_form_type'] : 'radios',
+  );
+
+}
+
+/**
+ * Alter the results page to display vote counts.
+ */
+function election_fptp_election_results_page_alter(&$output, stdClass $post) {
+
+  $election = $post->election;
+
+  if ($election->type != 'fptp') {
+    return;
+  }
+
+  $candidates = election_candidate_load_by_post($post, NULL, FALSE, FALSE);
+
+  // Count the candidates' votes.
+  $query = db_select('election_vote', 'ev');
+  $query->join('election_ballot', 'eb', 'eb.ballot_id = ev.ballot_id');
+  $query->condition('eb.value', 0, '>');
+  $query->condition('ev.post_id', $post->post_id);
+  $query->fields('ev', array('candidate_id'));
+  $query->addExpression('SUM(eb.value)');
+  $query->orderBy('SUM(eb.value)', 'DESC');
+  $query->groupBy('ev.candidate_id');
+  $candidates_votes = $query->execute()->fetchAllKeyed();
+
+  $total_votes = array_sum($candidates_votes);
+
+  // There may be candidates without any votes: add them to the end of the
+  // array.
+  foreach (array_diff(array_keys($candidates), array_keys($candidates_votes)) as $candidate_id) {
+    $candidates_votes[$candidate_id] = 0;
+  }
+
+  $rows = array();
+  foreach ($candidates_votes as $candidate_id => $votes) {
+    $candidate = $candidates[$candidate_id];
+    $row = array();
+    $row[] = l(election_candidate_get_name($candidate), 'election-candidate/' . $candidate_id);
+    $row[] = number_format($votes);
+    if ($votes == 0) {
+      $row[] = '-';
+    }
+    else {
+      $proportion = $total_votes ? $votes / $total_votes : 0;
+      $row[] = number_format($proportion * 100, 2) . '%';
+    }
+    $rows[] = $row;
+  }
+
+  $output['count'] = array(
+    '#theme' => 'table',
+    '#header' => array(t('Candidate'), t('Votes'), t('Proportion')),
+    '#rows' => $rows,
+  );
 
 }

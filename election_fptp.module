@@ -186,7 +186,7 @@ function election_fptp_election_results_page_alter(&$output, stdClass $post) {
   $candidates_votes = election_fptp_get_candidates_votes($post);
   $total_votes = array_sum($candidates_votes);
 
-  $candidates = election_candidate_load_by_post($post, array(), FALSE, FALSE);
+  $candidates = election_candidate_load_multiple(array_keys($candidates_votes));
 
   $rows = array();
   foreach ($candidates_votes as $candidate_id => $votes) {

@@ -42,13 +42,17 @@ function election_fptp_vote_form(&$form, &$form_state) {
     $form['ballot_paper']['#description'] .= ' ' . t('Candidates are displayed in a random order.');
   }
 
-  foreach ($candidates as $candidate) {
-    $candidate_options[$candidate->candidate_id] = election_candidate_get_name($candidate);
-  }
-
   $form_type = isset($post->settings['vote_form_type']) ? $post->settings['vote_form_type'] : 'radios';
   if (!in_array($form_type, array('radios', 'select'))) {
     $form_type = 'radios';
+  }
+
+  $candidate_options = array();
+  foreach ($candidates as $candidate) {
+    // The form API will sanitize the candidate's name when the $form_type is
+    // 'select', but not when it's 'radios'.
+    $sanitize = $form_type != 'select';
+    $candidate_options[$candidate->candidate_id] = election_candidate_get_name($candidate, $sanitize);
   }
 
   $form['ballot_paper']['candidate_id'] = array(
@@ -60,8 +64,6 @@ function election_fptp_vote_form(&$form, &$form_state) {
 
   $form['#validate'][] = 'election_fptp_vote_form_validate';
 
-
-  // @todo improve the confirm step
 }
 
 /**
@@ -69,8 +71,30 @@ function election_fptp_vote_form(&$form, &$form_state) {
  */
 function election_fptp_vote_form_validate($form, &$form_state) {
 
-  // Add 'candidate_id' to $form_state (so it's available for later).
+  // Add 'candidate_id' to $form_state (so it's available when
+  // confirming/saving votes).
   $form_state['candidate_id'] = $form_state['values']['candidate_id'];
+
+}
+
+/**
+ * Preprocess function for the voting confirmation page.
+ */
+function election_fptp_preprocess_election_vote_confirm(&$variables) {
+
+  $form_state = $variables['form_state'];
+  $election = $form_state['election'];
+
+  if ($election->type == 'fptp') {
+    $candidate = election_candidate_load($form_state['candidate_id']);
+
+    $variables['confirm']['candidate'] = array(
+      '#type' => 'item',
+      '#title' => t('Your chosen candidate'),
+      // The candidate's name will already be sanitized.
+      '#markup' => election_candidate_get_name($candidate),
+    );
+  }
 
 }
 
@@ -125,6 +149,29 @@ function election_fptp_form_election_post_form_alter(&$form, &$form_state) {
 }
 
 /**
+ * Count candidates's votes.
+ *
+ * @param object $post
+ *   The election post entity.
+ *
+ * @return array
+ *   An associative array where the keys are candidate IDs and the values are
+ *   the number of votes each candidate has received.
+ */
+function election_fptp_get_candidates_votes(stdClass $post) {
+  $query = db_select('election_candidate', 'ec')
+    ->condition('ec.post_id', $post->post_id)
+    ->condition('ec.cstatus', ELECTION_CANDIDATE_HOPEFUL, '>=')
+    ->fields('ec', array('candidate_id'));
+  $query->leftJoin('election_vote', 'ev', 'ev.candidate_id = ec.candidate_id');
+  $query->leftJoin('election_ballot', 'eb', 'eb.ballot_id = ev.ballot_id');
+  $query->addExpression('SUM(eb.value)', 'votes');
+  $query->orderBy('SUM(eb.value)', 'DESC');
+  $query->groupBy('ec.candidate_id');
+  return $query->execute()->fetchAllKeyed();
+}
+
+/**
  * Alter the results page to display vote counts.
  */
 function election_fptp_election_results_page_alter(&$output, stdClass $post) {
@@ -135,32 +182,17 @@ function election_fptp_election_results_page_alter(&$output, stdClass $post) {
     return;
   }
 
-  $candidates = election_candidate_load_by_post($post, NULL, FALSE, FALSE);
-
   // Count the candidates' votes.
-  $query = db_select('election_vote', 'ev');
-  $query->join('election_ballot', 'eb', 'eb.ballot_id = ev.ballot_id');
-  $query->condition('eb.value', 0, '>');
-  $query->condition('ev.post_id', $post->post_id);
-  $query->fields('ev', array('candidate_id'));
-  $query->addExpression('SUM(eb.value)');
-  $query->orderBy('SUM(eb.value)', 'DESC');
-  $query->groupBy('ev.candidate_id');
-  $candidates_votes = $query->execute()->fetchAllKeyed();
-
+  $candidates_votes = election_fptp_get_candidates_votes($post);
   $total_votes = array_sum($candidates_votes);
 
-  // There may be candidates without any votes: add them to the end of the
-  // array.
-  foreach (array_diff(array_keys($candidates), array_keys($candidates_votes)) as $candidate_id) {
-    $candidates_votes[$candidate_id] = 0;
-  }
+  $candidates = election_candidate_load_by_post($post, array(), FALSE, FALSE);
 
   $rows = array();
   foreach ($candidates_votes as $candidate_id => $votes) {
     $candidate = $candidates[$candidate_id];
     $row = array();
-    $row[] = l(election_candidate_get_name($candidate), 'election-candidate/' . $candidate_id);
+    $row[] = l(election_candidate_get_name($candidate, FALSE), 'election-candidate/' . $candidate_id);
     $row[] = number_format($votes);
     if ($votes == 0) {
       $row[] = '-';

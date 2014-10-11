@@ -42,9 +42,14 @@ function election_fptp_vote_form(&$form, &$form_state) {
     $form['ballot_paper']['#description'] .= ' ' . t('Candidates are displayed in a random order.');
   }
 
-  $form_type = isset($post->settings['vote_form_type']) ? $post->settings['vote_form_type'] : 'radios';
-  if (!in_array($form_type, array('radios', 'select'))) {
+  $form_type = isset($post->settings['vote_form_type']) ? $post->settings['vote_form_type'] : 'default';
+
+  // If there is no setting, decide on the best form type (select or radios).
+  if ($form_type == 'default' || !in_array($form_type, array('radios', 'select'))) {
     $form_type = 'radios';
+    if (count($candidates) < 2 || count($candidates) > 10) {
+      $form_type = 'select';
+    }
   }
 
   $candidate_options = array();
@@ -140,10 +145,12 @@ function election_fptp_form_election_post_form_alter(&$form, &$form_state) {
     '#type' => 'select',
     '#title' => t('Ballot form type'),
     '#options' => array(
+      'default' => t('Default'),
       'radios' => t('Radio buttons'),
       'select' => t('Drop-down select options'),
     ),
-    '#default_value' => isset($post->settings['vote_form_type']) ? $post->settings['vote_form_type'] : 'radios',
+    '#default_value' => isset($post->settings['vote_form_type']) ? $post->settings['vote_form_type'] : 'default',
+    '#description' => t('Default: radio buttons if there are 2-10 candidates; drop-down select options otherwise.'),
   );
 
 }

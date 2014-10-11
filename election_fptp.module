@@ -192,15 +192,32 @@ function election_fptp_election_results_page_alter(&$output, stdClass $post) {
   foreach ($candidates_votes as $candidate_id => $votes) {
     $candidate = $candidates[$candidate_id];
     $row = array();
-    $row[] = l(election_candidate_get_name($candidate, FALSE), 'election-candidate/' . $candidate_id);
+
+    // There is a chance that the user viewing results does not have permission
+    // to view this candidate (the candidate might be unpublished). This would
+    // be a bizarre situation, but it still needs to be handled.
+    if (election_candidate_access('view', $candidate)) {
+      $row[] = l(election_candidate_get_name($candidate, FALSE), 'election-candidate/' . $candidate_id);
+    }
+    elseif (!$candidate->published) {
+      $row[] = t('Unpublished candidate');
+    }
+    else {
+      $row[] = t('Candidate (access not available)');
+    }
+
+    // Display the number of votes.
     $row[] = number_format($votes);
+
+    // Display the proportion of votes.
     if ($votes == 0) {
-      $row[] = '-';
+      $row[] = '0%';
     }
     else {
       $proportion = $total_votes ? $votes / $total_votes : 0;
       $row[] = number_format($proportion * 100, 2) . '%';
     }
+
     $rows[] = $row;
   }
 

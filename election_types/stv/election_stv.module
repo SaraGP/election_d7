@@ -337,7 +337,7 @@ function _election_stv_get_ordinal($num) {
   else {
     $ord = $num . $ends[$num % 10];
   }
-  return $ord;
+  return t($ord);
 }
 
 /**

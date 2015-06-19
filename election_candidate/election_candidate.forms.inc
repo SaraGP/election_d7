@@ -204,28 +204,24 @@ function election_candidate_form_delete_confirm($form, &$form_state, stdClass $c
  * Form submit function for confirming delete for an election candidate.
  */
 function election_candidate_form_delete_confirm_submit($form, &$form_state) {
-  if ($form_state['values']['confirm']) {
+  $candidate = election_candidate_load($form_state['values']['candidate_id']);
+  $election = election_load($candidate->election_id);
 
-    $candidate = election_candidate_load($form_state['values']['candidate_id']);
-    $election = election_load($candidate->election_id);
+  $info = array(
+    '%name' => election_candidate_get_name($candidate, FALSE),
+    '%election_title' => !empty($election) ? $election->title : t('unknown'),
+  );
 
-    $info = array(
-      '%name' => election_candidate_get_name($candidate, FALSE),
-      '%election_title' => !empty($election) ? $election->title : t('unknown'),
-    );
-
-    // Delete the candidate.
-    election_candidate_delete($form_state['values']['candidate_id']);
-    watchdog('election_candidate', 'Deleted candidate %name.', $info);
-    drupal_set_message(
-      t('The candidate %name has been deleted from the election %election_title.', $info)
-    );
-  }
+  // Delete the candidate.
+  election_candidate_delete($form_state['values']['candidate_id']);
+  watchdog('election_candidate', 'Deleted candidate %name.', $info);
+  drupal_set_message(
+    t('The candidate %name has been deleted from the election %election_title.', $info)
+  );
 
   if (empty($_GET['destination']) && $election) {
     $form_state['redirect'] = election_uri_path($election) . '/candidates';
   }
-
 }
 
 /**

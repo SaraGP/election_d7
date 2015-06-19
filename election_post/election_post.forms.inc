@@ -252,26 +252,22 @@ function election_post_form_delete_confirm($form, &$form_state, stdClass $post) 
  * Submit function, called after confirming delete for a post.
  */
 function election_post_form_delete_confirm_submit($form, &$form_state) {
-  if ($form_state['values']['confirm']) {
+  $election = election_load($form_state['values']['election_id']);
 
-    $election = election_load($form_state['values']['election_id']);
+  $post = election_post_load($form_state['values']['post_id']);
 
-    $post = election_post_load($form_state['values']['post_id']);
+  // Delete the post.
+  election_post_delete($post->post_id);
 
-    // Delete the post.
-    election_post_delete($post->post_id);
+  $post_name = election_get_post_name($election->type);
 
-    $post_name = election_get_post_name($election->type);
+  watchdog('election_post', 'Deleted @post %post_title', array('@post' => $post_name, '%post_title' => $post->title));
 
-    watchdog('election_post', 'Deleted @post %post_title', array('@post' => $post_name, '%post_title' => $post->title));
-
-    drupal_set_message(
-      t('The @post %post_title has been deleted.', array('@post' => $post_name, '%post_title' => $post->title))
-    );
-  }
+  drupal_set_message(
+    t('The @post %post_title has been deleted.', array('@post' => $post_name, '%post_title' => $post->title))
+  );
 
   if (empty($_GET['destination'])) {
     $form_state['redirect'] = election_uri_path($election);
   }
-
 }

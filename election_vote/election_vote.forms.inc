@@ -275,6 +275,8 @@ function election_vote_form_abstain($form, &$form_state) {
   $post = $form_state['post'];
   $election = $form_state['election'];
 
+  $success = FALSE;
+
   // Check to prevent duplicate form submissions.
   if (!empty($_SESSION['election_vote_cast_' . $post->post_id])) {
     $form_state['redirect'] = election_uri_path($election);
@@ -305,10 +307,10 @@ function election_vote_form_abstain($form, &$form_state) {
       throw new Exception('The vote record could not be saved.');
     }
 
+    $success = TRUE;
   }
   catch (Exception $e) {
     $transaction->rollback();
-    $success = FALSE;
     watchdog_exception('election_vote', $e, NULL, WATCHDOG_ERROR);
   }
 
@@ -341,6 +343,8 @@ function election_vote_form_vote($form, &$form_state) {
 
   $post = $form_state['post'];
   $election = $form_state['election'];
+
+  $success = FALSE;
 
   // Check to prevent duplicate form submissions.
   if (!empty($_SESSION['election_vote_cast_' . $post->post_id])) {
@@ -385,7 +389,6 @@ function election_vote_form_vote($form, &$form_state) {
   }
   catch (Exception $e) {
     $transaction->rollback();
-    $success = FALSE;
     watchdog_exception('election_vote', $e, NULL, WATCHDOG_ERROR);
   }
 

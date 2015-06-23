@@ -186,6 +186,11 @@ function election_referendum_vote_form(&$form, &$form_state) {
 
   $form['#validate'][] = 'election_referendum_vote_form_validate';
 
+  $form['buttons']['clear_form'] = array(
+    '#type' => 'link',
+    '#title' => t('Clear form'),
+    '#href' => $_GET['q'],
+  );
 }
 
 /**

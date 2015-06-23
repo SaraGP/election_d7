@@ -195,7 +195,7 @@ function election_stv_vote_form(&$form, &$form_state) {
 
   $form['buttons']['clear_form'] = array(
     '#type' => 'link',
-    '#title' => 'Clear form',
+    '#title' => t('Clear form'),
     '#href' => $_GET['q'],
   );
 

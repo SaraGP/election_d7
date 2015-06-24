@@ -77,6 +77,10 @@ function election_vote_form($form, &$form_state, stdClass $post) {
     );
   }
 
+  $form['buttons']['clear_form'] = array(
+    '#markup' => l(t('Clear form'), $_GET['q']),
+  );
+
   $form['#attached']['js'][] = drupal_get_path('module', 'election') . '/submit-single.min.js';
 
   // Allow the form to be modified via the election type's 'vote form' callback.

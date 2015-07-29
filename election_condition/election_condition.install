@@ -27,9 +27,7 @@ function election_condition_schema() {
         'not null' => TRUE,
       ),
     ),
-    'unique keys' => array(
-      'posts_conditions' => array('post_id', 'condition_machine_name'),
-    ),
+    'primary key' => array('post_id', 'condition_machine_name'),
     'foreign keys' => array(
       'post' => array(
         'table' => 'election_post',
@@ -84,4 +82,12 @@ function election_condition_update_7101() {
   ));
   // Drop the now redundant election_condition table.
   db_drop_table('election_condition');
+}
+
+/**
+ * Convert unique key to primary key in {election_post_condition} table.
+ */
+function election_condition_update_7102() {
+  db_add_primary_key('election_post_condition', array('post_id', 'condition_machine_name'));
+  db_drop_unique_key('election_post_condition', 'posts_conditions');
 }

@@ -83,16 +83,10 @@ function election_condition_form_election_post_form_alter(&$form, &$form_state) 
   $form['conditions'] = array(
     '#type' => 'fieldset',
     '#title' => t('Conditional voting'),
+    '#description' => t('All conditions checked below must be satisfied before the user will be allowed to vote.'),
     '#collapsible' => TRUE,
     '#collapsed' => !count($post->conditions),
     '#weight' => 99,
-  );
-  $form['conditions']['title'] = array(
-    'title' => array(
-      '#prefix' => '<div class="form-item"><label for="edit-conditions">',
-      '#markup' => t('Assign conditions'),
-      '#suffix' => '</label>',
-    ),
   );
   $condition_headers = array(
     'name' => t('Name'),

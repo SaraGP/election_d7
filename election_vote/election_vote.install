@@ -8,6 +8,8 @@
  * Implements hook_schema().
  */
 function election_vote_schema() {
+  // Needed during uninstall when the election module is disabled.
+  require_once(__DIR__ . '/../includes/election.constants.inc');
 
   $schema = array();
 

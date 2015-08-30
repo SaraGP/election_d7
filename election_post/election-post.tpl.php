@@ -10,7 +10,7 @@
     <?php if (isset($title_prefix)): ?>
       <?php print render($title_prefix); ?>
     <?php endif; ?>
-    <h2<?php print $title_attributes; ?>><a href="<?php print $post_url; ?>"><?php print $title; ?></a></h2>
+    <h3<?php print $title_attributes; ?>><a href="<?php print $post_url; ?>"><?php print $title; ?></a></h3>
     <?php if (isset($title_suffix)): ?>
       <?php print render($title_suffix); ?>
     <?php endif; ?>

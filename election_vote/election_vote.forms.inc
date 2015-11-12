@@ -282,7 +282,7 @@ function election_vote_form_abstain($form, &$form_state) {
   $success = FALSE;
 
   // Check to prevent duplicate form submissions.
-  if (!empty($_SESSION['election_vote_cast_' . $post->post_id])) {
+  if (election_vote_check_account_previously_voted($post) || !empty($_SESSION['election_vote_cast_' . $post->post_id])) {
     $form_state['redirect'] = election_uri_path($election);
     return;
   }
@@ -351,7 +351,7 @@ function election_vote_form_vote($form, &$form_state) {
   $success = FALSE;
 
   // Check to prevent duplicate form submissions.
-  if (!empty($_SESSION['election_vote_cast_' . $post->post_id])) {
+  if (election_vote_check_account_previously_voted($post) || !empty($_SESSION['election_vote_cast_' . $post->post_id])) {
     $form_state['redirect'] = election_uri_path($election);
     return;
   }

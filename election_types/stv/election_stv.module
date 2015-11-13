@@ -346,7 +346,7 @@ function election_stv_preprocess_election_vote_confirm(&$variables) {
     $original_rankings = $form_state['original_rankings'];
 
     $rank_changes = $form_state['rank_changes'];
-    $ranking_changed = count($rank_changes) ? TRUE : FALSE;
+    $ranking_changed = (bool) count($rank_changes);
     $variables['ranking_changed'] = $ranking_changed;
 
     $header = array(t('Candidate'));

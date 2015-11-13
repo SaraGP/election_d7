@@ -215,7 +215,7 @@ function election_referendum_election_vote_referendum_save($ballot_id, $post, $v
     ->fields($vote)
     ->execute();
 
-  return $success ? TRUE : FALSE;
+  return (bool) $success;
 
 }
 

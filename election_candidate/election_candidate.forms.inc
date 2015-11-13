@@ -12,7 +12,7 @@ function election_candidate_form($form, &$form_state, stdClass $candidate, $post
   global $user;
 
   $election = $post ? $post->election : election_load($candidate->election_id);
-  $candidate->is_new = empty($candidate->is_new) ? FALSE : TRUE;
+  $candidate->is_new = !empty($candidate->is_new);
 
   $form['#id'] = 'election-candidate-form';
   $form['#candidate'] = $candidate;

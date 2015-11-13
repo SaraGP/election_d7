@@ -175,6 +175,9 @@ function election_vote_schema() {
       'abstain' => array('abstain'),
       'value' => array('value'),
     ),
+    'unique keys' => array(
+      'one_vote_per_person' => array('election_id', 'post_id', 'uid'),
+    ),
     'foreign keys' => array(
       'election' => array(
         'table' => 'election',
@@ -259,4 +262,11 @@ function election_vote_update_7003() {
     db_delete('election_vote')
       ->condition('abstain', 1);
   }
+}
+
+/**
+ * Add unique index to prevent multiple votes.
+ */
+function election_vote_update_7004() {
+  db_add_unique_key('election_ballot', 'one_vote_per_person', array('election_id', 'post_id', 'uid'));
 }

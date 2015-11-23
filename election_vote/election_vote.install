@@ -255,12 +255,14 @@ function election_vote_update_7003() {
     $query->condition('ev.abstain', 1);
     $query->distinct();
     $ballot_ids = $query->execute()->fetchCol();
-    db_update('election_ballot')
-      ->fields(array('abstain' => 1))
-      ->condition('ballot_id', $ballot_ids, 'IN')
-      ->execute();
-    db_delete('election_vote')
-      ->condition('abstain', 1);
+    if (!empty($ballot_ids)) {
+        db_update('election_ballot')
+            ->fields(array('abstain' => 1))
+            ->condition('ballot_id', $ballot_ids, 'IN')
+            ->execute();
+        db_delete('election_vote')
+            ->condition('abstain', 1);
+    }
   }
 }
 

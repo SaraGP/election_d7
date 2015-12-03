@@ -161,8 +161,9 @@ function election_vote_schema() {
         'not null' => TRUE,
         'default' => 0,
       ),
+      // See election_vote_get_ballot_value().
       'value' => array(
-        'description' => 'The value of the ballot. If set to 0, the ballot will not be counted.',
+        'description' => 'The value of the ballot: usually 1. If set to 0, the ballot will not be counted.',
         'type' => 'int',
         'unsigned' => TRUE,
         'not null' => TRUE,

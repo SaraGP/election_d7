@@ -535,6 +535,13 @@ function election_vote_page_explain($post) {
 /**
  * Get the value of a ballot, before it is saved.
  *
+ * In normal elections, the 'value' of a ballot is 1. However, occasionally
+ * there is a use case where one voter's ballots should have a higher value than
+ * others, for example where the voters themselves are each representing groups
+ * of greater or fewer people.
+ *
+ * @see hook_election_vote_ballot_value_alter()
+ *
  * @param object $election
  *   The election entity.
  * @param object $post

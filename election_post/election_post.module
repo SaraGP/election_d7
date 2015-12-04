@@ -430,30 +430,37 @@ function election_post_delete($post_id) {
 }
 
 /**
- * Implements hook_entity_insert().
+ * Implements hook_ENITY_TYPE_insert().
  */
-function election_post_entity_insert($entity, $type) {
-  switch ($type) {
-    case 'election_post':
-      if (module_exists('pathauto')) {
-        _election_post_pathauto_update_alias($entity, 'insert');
-      }
-      break;
-
+function election_post_election_post_insert($post) {
+  if (module_exists('pathauto')) {
+    _election_post_pathauto_update_alias($post, 'insert');
   }
 }
 
 /**
- * Implements hook_entity_update().
+ * Implements hook_ENTITY_TYPE_update().
  */
-function election_post_entity_update($entity, $type) {
-  switch ($type) {
-    case 'election_post':
-      if (module_exists('pathauto')) {
-        _election_post_pathauto_update_alias($entity, 'update');
-      }
-      break;
+function election_post_election_post_update($post) {
+  if (module_exists('pathauto')) {
+    _election_post_pathauto_update_alias($post, 'update');
+  }
 
+  if (isset($post->original)) {
+    // Log changes of voting status.
+    if ($post->original->vstatus_inheritance != $post->vstatus_inheritance) {
+      $status_options = array(
+        ELECTION_POST_STATUS_INHERIT => t('Inherited'),
+        ELECTION_POST_STATUS_CLOSED => t('Closed'),
+      );
+      watchdog('election_post', 'The voting status was changed from @previous_status to @status for the !post %title (@id).', array(
+        '@previous_status' => $status_options[$post->original->vstatus_inheritance],
+        '@status' => $status_options[$post->vstatus_inheritance],
+        '!post' => election_get_post_name($post->election->type),
+        '%title' => $post->title,
+        '@id' => $post->post_id,
+      ));
+    }
   }
 }
 

@@ -542,10 +542,12 @@ function election_election_update($election) {
     // Log changes of voting status.
     if ($election->original->vstatus != $election->vstatus) {
       $status_options = election_status_options();
-      watchdog('election', 'The voting status was set to @status for the @type %title.', array(
+      watchdog('election', 'The voting status was changed from @previous_status to @status for the @type %title (@id).', array(
+        '@previous_status' => $status_options[$election->original->vstatus],
         '@status' => $status_options[$election->vstatus],
         '@type' => $type['name'],
         '%title' => $election->title,
+        '@id' => $election->election_id,
       ));
     }
 
@@ -564,9 +566,10 @@ function election_election_update($election) {
         )));
       }
 
-      watchdog('election', 'The voting schedule for the @type %title was changed. <pre>!summary</pre>', array(
+      watchdog('election', 'The voting schedule for the @type %title (@id) was changed. <pre>!summary</pre>', array(
         '@type' => $type['name'],
         '%title' => $election->title,
+        '@id' => $election->election_id,
         '!summary' => implode("\n", $change_summary),
       ));
     }

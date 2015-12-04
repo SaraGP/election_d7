@@ -515,42 +515,80 @@ function election_save($election) {
 }
 
 /**
- * Implements hook_entity_update().
+ * Returns a list of status options, for voting or nominations.
+ *
+ * @return array
+ *   An array of option labels, keyed by the ELECTION_STATUS_ constants.
  */
-function election_entity_update($entity, $type) {
-  switch ($type) {
-    case 'election':
-      if (module_exists('pathauto')) {
-        _election_pathauto_update_alias($entity, 'update');
-      }
-      break;
-
-  }
+function election_status_options() {
+  return array(
+    ELECTION_STATUS_CLOSED => t('Closed'),
+    ELECTION_STATUS_OPEN => t('Open'),
+    ELECTION_STATUS_SCHEDULED => t('Scheduled'),
+  );
 }
 
 /**
- * Implements hook_entity_delete().
+ * Implements hook_ENTITY_TYPE_update().
  */
-function election_entity_delete($entity, $type) {
-  switch ($type) {
-    case 'election':
-      // Delete Pathauto path aliases when an election is deleted.
-      if (function_exists('pathauto_entity_path_delete_all')) {
-        pathauto_entity_path_delete_all('election', $entity);
-      }
-      break;
-
+function election_election_update($election) {
+  if (module_exists('pathauto')) {
+    _election_pathauto_update_alias($election, 'update');
   }
-}
 
-/**
- * Implements hook_entity_insert().
- */
-function election_entity_insert($entity, $type) {
-  if ($type == 'election') {
-    if (module_exists('pathauto')) {
-      _election_pathauto_update_alias($entity, 'insert');
+  if (isset($election->original)) {
+    $type = _election_type_get_info($election->type);
+
+    // Log changes of voting status.
+    if ($election->original->vstatus != $election->vstatus) {
+      $status_options = election_status_options();
+      watchdog('election', 'The voting status was set to @status for the @type %title.', array(
+        '@status' => $status_options[$election->vstatus],
+        '@type' => $type['name'],
+        '%title' => $election->title,
+      ));
     }
+
+    // Log changes of voting schedule.
+    if ($election->original->vopen_time != $election->vopen_time || $election->original->vclose_time != $election->vclose_time) {
+      $change_summary = array();
+      $change_summary[] = t('Current schedule: open @open, close @close.', array(
+        '@open' => format_date($election->vopen_time, 'short'),
+        '@close' => format_date($election->vclose_time, 'short'),
+      ));
+
+      if (!empty($election->original->vopen_time)) {
+        array_unshift($change_summary, t('Previous schedule: open @open, close @close.', array(
+          '@open' => format_date($election->original->vopen_time, 'short'),
+          '@close' => format_date($election->original->vclose_time, 'short'),
+        )));
+      }
+
+      watchdog('election', 'The voting schedule for the @type %title was changed. <pre>!summary</pre>', array(
+        '@type' => $type['name'],
+        '%title' => $election->title,
+        '!summary' => implode("\n", $change_summary),
+      ));
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ */
+function election_election_delete($election) {
+  // Delete Pathauto path aliases when an election is deleted.
+  if (function_exists('pathauto_entity_path_delete_all')) {
+    pathauto_entity_path_delete_all('election', $election);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function election_election_insert($election) {
+  if (module_exists('pathauto')) {
+    _election_pathauto_update_alias($election, 'insert');
   }
 }
 

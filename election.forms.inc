@@ -44,11 +44,7 @@ function election_form($form, &$form_state, stdClass $election) {
       '#type' => 'select',
       '#title' => t('Nominations status'),
       '#default_value' => isset($election->nstatus) ? $election->nstatus : ELECTION_STATUS_CLOSED,
-      '#options' => array(
-        ELECTION_STATUS_CLOSED => t('Closed'),
-        ELECTION_STATUS_OPEN => t('Open'),
-        ELECTION_STATUS_SCHEDULED => t('Scheduled'),
-      ),
+      '#options' => election_status_options(),
     );
     $form['nominations']['nschedule'] = array(
       '#title' => t('Nominations schedule'),
@@ -90,11 +86,7 @@ function election_form($form, &$form_state, stdClass $election) {
     '#type' => 'select',
     '#title' => t('Voting status'),
     '#default_value' => isset($election->vstatus) ? $election->vstatus : ELECTION_STATUS_CLOSED,
-    '#options' => array(
-      ELECTION_STATUS_CLOSED => t('Closed'),
-      ELECTION_STATUS_OPEN => t('Open'),
-      ELECTION_STATUS_SCHEDULED => t('Scheduled'),
-    ),
+    '#options' => election_status_options(),
   );
   $form['voting']['vschedule'] = array(
     '#title' => t('Voting schedule'),

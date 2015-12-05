@@ -114,13 +114,24 @@ function election_vote_theme() {
  * @param object $post
  *   The election post object.
  * @param object $account
- *   The user account for which to check.
+ *   The user account for which to check (default: the current user).
+ * @param bool $only_open
+ *   Access will be denied if this argument is TRUE (the default), and if voting
+ *   is not currently open for the post.
+ *
+ * @return bool
+ *   TRUE if the user has access, FALSE otherwise.
  */
-function election_vote_access($op, stdClass $post, $account = NULL) {
+function election_vote_access($op, stdClass $post, $account = NULL, $only_open = TRUE) {
 
   // The default account is the current user.
   if ($account === NULL) {
     $account = $GLOBALS['user'];;
+  }
+
+  // Check whether the election and post are open for voting.
+  if ($only_open && (!election_voting_open($post->election) || $post->vstatus_inheritance == ELECTION_POST_STATUS_CLOSED)) {
+    return FALSE;
   }
 
   // If access has already been checked in this page request, return from cache.
@@ -131,19 +142,6 @@ function election_vote_access($op, stdClass $post, $account = NULL) {
 
   // Check whether the user can view the post.
   if (!election_post_access('view', $post, $account)) {
-    $grants[$post->post_id][$account->uid][$op] = FALSE;
-    return FALSE;
-  }
-
-  // Check whether the election is open.
-  $election = $post->election;
-  if (!election_voting_open($election)) {
-    $grants[$post->post_id][$account->uid][$op] = FALSE;
-    return FALSE;
-  }
-
-  // Check whether the post is individually set to 'closed'.
-  if ($post->vstatus_inheritance == ELECTION_POST_STATUS_CLOSED) {
     $grants[$post->post_id][$account->uid][$op] = FALSE;
     return FALSE;
   }

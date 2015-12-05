@@ -1033,9 +1033,19 @@ function election_candidate_entity_insert($entity, $type) {
   if ($type == 'election_candidate' && module_exists('pathauto')) {
     _election_candidate_pathauto_update_alias($entity, 'insert');
   }
-  // Create default candidate type field instances.
+
+  // Add default field instances to the new candidate type.
   if ($type == 'election_candidate_type') {
     module_load_include('inc', 'election_candidate', 'election_candidate.field');
+
+    // First, ensure all the default field bases exist.
+    foreach (_election_candidate_fields() as $field_name => $field) {
+      if (!field_info_field($field_name)) {
+        field_create_field($field);
+      }
+    }
+
+    // Then create the default field instances on this candidate type.
     foreach (_election_candidate_field_instances() as $instance) {
       $instance['bundle'] = $entity->type;
       field_create_instance($instance);

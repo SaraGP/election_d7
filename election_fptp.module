@@ -131,6 +131,7 @@ function election_fptp_election_vote_fptp_save($ballot_id, $post, $vote_form, $v
  * Add FPTP-specific settings to the election post edit form.
  */
 function election_fptp_form_election_post_form_alter(&$form, &$form_state) {
+  $post = $form_state['post'];
 
   $election = $form_state['election'];
   if ($election->type != 'fptp') {

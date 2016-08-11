@@ -176,6 +176,11 @@ function election_candidate_access($op, $candidate = NULL, $account = NULL) {
 
     case 'update':
     case 'delete':
+      // These actions are denied while voting is open for this post.
+      // Use the 'bypass running election lock' permission to allow them again.
+      if (election_post_voting_open($post) && !user_access('bypass running election lock', $account)) {
+        return FALSE;
+      }
       if (election_access('update', $election, $account)) {
         return TRUE;
       }

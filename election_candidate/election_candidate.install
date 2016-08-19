@@ -201,6 +201,16 @@ function election_candidate_install() {
 }
 
 /**
+ * Implements hook_uninstall().
+ */
+function election_candidate_uninstall() {
+  drupal_load('module', 'election_candidate');
+  foreach (array_keys(election_candidate_get_types()) as $bundle) {
+    field_attach_delete_bundle('election_candidate', $bundle);
+  }
+}
+
+  /**
  * Copy field instances from old single bundle to new per-election bundles.
  */
 function election_candidate_update_7001() {

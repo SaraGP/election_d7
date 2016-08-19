@@ -150,6 +150,17 @@ function election_post_schema_alter(&$schema) {
 }
 
 /**
+ * Implements hook_uninstall().
+ */
+function election_post_uninstall() {
+  drupal_load('module', 'election');
+  foreach (election_types() as $type) {
+    $post_machine_name = $type['post machine name'];
+    field_attach_delete_bundle('election_post', $post_machine_name);
+  }
+}
+
+/**
  * Add the allow_equal column to the election_post table.
  */
 function election_post_update_7101() {

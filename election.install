@@ -129,6 +129,16 @@ function election_schema() {
 }
 
 /**
+ * Implements hook_uninstall().
+ */
+function election_uninstall() {
+  drupal_load('module', 'election');
+  foreach (array_keys(election_types()) as $bundle) {
+    field_attach_delete_bundle('election', $bundle);
+  }
+}
+
+/**
  * Add the 'published' column to the election table.
  */
 function election_update_7101() {

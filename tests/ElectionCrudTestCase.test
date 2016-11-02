@@ -1,13 +1,13 @@
 <?php
+
 /**
  * @file
  * Test the Election module for basic CRUD functionality.
  */
-
 class ElectionCrudTestCase extends DrupalWebTestCase {
 
   /**
-   * Provide basic information about the test.
+   * {@inheritdoc}
    */
   public static function getInfo() {
     return array(
@@ -18,7 +18,7 @@ class ElectionCrudTestCase extends DrupalWebTestCase {
   }
 
   /**
-   * Overrides parent::setUp().
+   * {@inheritdoc}
    */
   public function setUp() {
     $modules = array(
@@ -32,7 +32,6 @@ class ElectionCrudTestCase extends DrupalWebTestCase {
    * Create, update, and delete an election.
    */
   public function testElectionCrud() {
-
     // Create a user who has the appropriate permissions for this test.
     $test_user = $this->drupalCreateUser(array(
       'create elections',
@@ -61,7 +60,6 @@ class ElectionCrudTestCase extends DrupalWebTestCase {
       // Delete the election.
       $this->helperElectionDeleteUi($election);
     }
-
   }
 
   /**

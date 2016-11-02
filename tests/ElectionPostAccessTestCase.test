@@ -1,13 +1,13 @@
 <?php
+
 /**
  * @file
  * Test the Election Candidate module for access control.
  */
-
 class ElectionPostAccessTestCase extends ElectionWebTestCase {
 
   /**
-   * Overrides parent::setUp().
+   * {@inheritdoc}
    */
   public function setUp() {
     $modules = array(

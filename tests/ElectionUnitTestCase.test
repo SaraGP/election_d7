@@ -1,13 +1,13 @@
 <?php
+
 /**
  * @file
  * Unit tests for the basic functionality of Election.
  */
-
 class ElectionUnitTestCase extends DrupalUnitTestCase {
 
   /**
-   * Provide basic information about the tests.
+   * {@inheritdoc}
    */
   public static function getInfo() {
     return array(
@@ -18,7 +18,7 @@ class ElectionUnitTestCase extends DrupalUnitTestCase {
   }
 
   /**
-   * Overrides parent::setUp().
+   * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();

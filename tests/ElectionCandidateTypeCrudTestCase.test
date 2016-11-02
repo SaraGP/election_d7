@@ -1,13 +1,13 @@
 <?php
+
 /**
  * @file
  * Test the Election Candidate module for candidate types CRUD functionality.
  */
-
 class ElectionCandidateTypeCrudTestCase extends DrupalWebTestCase {
 
   /**
-   * Provide basic information about the test.
+   * {@inheritdoc}
    */
   public static function getInfo() {
     return array(
@@ -18,7 +18,7 @@ class ElectionCandidateTypeCrudTestCase extends DrupalWebTestCase {
   }
 
   /**
-   * Overrides parent::setUp().
+   * {@inheritdoc}
    */
   public function setUp() {
     $modules = array(
@@ -31,7 +31,6 @@ class ElectionCandidateTypeCrudTestCase extends DrupalWebTestCase {
    * Create, update, and delete an election candidate type.
    */
   public function testElectionCandidateTypeCrud() {
-
     // Create a user who has the appropriate permissions for this test.
     $test_user = $this->drupalCreateUser(array(
       'administer candidate types',

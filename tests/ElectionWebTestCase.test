@@ -1,9 +1,9 @@
 <?php
+
 /**
  * @file
  * Parent class for further test cases of the Election module.
  */
-
 class ElectionWebTestCase extends DrupalWebTestCase {
 
   /**

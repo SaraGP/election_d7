@@ -1,16 +1,13 @@
 <?php
-/**
- * @file
- * Test the Election Candidate module for access control.
- */
 
 /**
- * Test access control for viewing posts.
+ * @file
+ * Test the Election Candidate module for access control for viewing posts.
  */
 class ElectionPostViewAccessTestCase extends ElectionPostAccessTestCase {
 
   /**
-   * Provide basic information about the test.
+   * {@inheritdoc}
    */
   public static function getInfo() {
     return array(

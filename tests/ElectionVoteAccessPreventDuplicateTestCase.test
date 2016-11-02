@@ -1,16 +1,13 @@
 <?php
-/**
- * @file
- * Test the Election Vote module for access control.
- */
 
 /**
- * Test access control for restricting each user to a single vote.
+ * @file
+ * Test the Election Vote module for restricting each user to a single vote.
  */
 class ElectionVoteAccessPreventDuplicateTestCase extends ElectionWebTestCase {
 
   /**
-   * Provide basic information about the test.
+   * {@inheritdoc}
    */
   public static function getInfo() {
     return array(
@@ -21,7 +18,7 @@ class ElectionVoteAccessPreventDuplicateTestCase extends ElectionWebTestCase {
   }
 
   /**
-   * Overrides parent::setUp().
+   * {@inheritdoc}
    */
   public function setUp() {
     $modules = array(

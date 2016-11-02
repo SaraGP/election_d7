@@ -1,13 +1,13 @@
 <?php
+
 /**
  * @file
  * Test the Election Post module for basic CRUD functionality.
  */
-
 class ElectionPostCrudTestCase extends DrupalWebTestCase {
 
   /**
-   * Provide basic information about the test.
+   * {@inheritdoc}
    */
   public static function getInfo() {
     return array(
@@ -18,7 +18,7 @@ class ElectionPostCrudTestCase extends DrupalWebTestCase {
   }
 
   /**
-   * Overrides parent::setUp().
+   * {@inheritdoc}
    */
   public function setUp() {
     $modules = array(

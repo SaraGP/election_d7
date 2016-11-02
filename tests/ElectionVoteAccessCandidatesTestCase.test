@@ -1,16 +1,13 @@
 <?php
-/**
- * @file
- * Test the Election Vote module for access control.
- */
 
 /**
- * Test voting access against there being enough candidates for a post.
+ * @file
+ * Test the Election Vote module for access against there being enough candidates for a post.
  */
 class ElectionVoteAccessCandidatesTestCase extends ElectionWebTestCase {
 
   /**
-   * Provide basic information about the test.
+   * {@inheritdoc}
    */
   public static function getInfo() {
     return array(
@@ -21,7 +18,7 @@ class ElectionVoteAccessCandidatesTestCase extends ElectionWebTestCase {
   }
 
   /**
-   * Overrides parent::setUp().
+   * {@inheritdoc}
    */
   public function setUp() {
     $modules = array(

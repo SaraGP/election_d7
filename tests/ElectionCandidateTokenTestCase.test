@@ -1,13 +1,13 @@
 <?php
+
 /**
  * @file
  * Test the Election Candidate module's tokens.
  */
-
 class ElectionCandidateTokenTestCase extends ElectionWebTestCase {
 
   /**
-   * Provide basic information about the test.
+   * {@inheritdoc}
    */
   public static function getInfo() {
     return array(
@@ -18,7 +18,7 @@ class ElectionCandidateTokenTestCase extends ElectionWebTestCase {
   }
 
   /**
-   * Overrides parent::setUp().
+   * {@inheritdoc}
    */
   public function setUp() {
     $modules = array(

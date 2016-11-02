@@ -172,14 +172,9 @@ function election_form_validate($form, &$form_state) {
 
   // VALIDATE VOTING SCHEDULE...
   $vstatus = $form_state['values']['vstatus'];
-  $vopen_time = $form_state['values']['vopen_time'];
-  if (is_array($vopen_time)) {
-    $vopen_time = $vopen_time['date'] . ' ' . ($vopen_time['time'] ? '00:00' : $vopen_time['time']);
-  }
-  $vclose_time = $form_state['values']['vclose_time'];
-  if (is_array($vclose_time)) {
-    $vclose_time = $vclose_time['date'] . ' ' . ($vclose_time['time'] ? '00:00' : $vclose_time['time']);
-  }
+  $vopen_time = _election_normalize_datetime($form_state['values']['vopen_time']);
+  $vclose_time = _election_normalize_datetime($form_state['values']['vclose_time']);
+
   // Check that the opening and closing times are set if voting is scheduled.
   if ($vstatus == ELECTION_STATUS_SCHEDULED
       && (empty($vopen_time) || empty($vclose_time))) {
@@ -187,21 +182,15 @@ function election_form_validate($form, &$form_state) {
   }
   // Check that the closing time is after the opening time.
   elseif ($vstatus == ELECTION_STATUS_SCHEDULED
-        && strtotime($vclose_time) <= strtotime($vopen_time)) {
+        && $vclose_time <= $vopen_time) {
     form_set_error('vschedule', t('The closing time of voting must be after the opening time.'));
   }
 
   // VALIDATE NOMINATIONS SCHEDULE...
   if (isset($form_state['values']['nstatus'])) {
     $nstatus = $form_state['values']['nstatus'];
-    $nopen_time = $form_state['values']['nopen_time'];
-    if (is_array($nopen_time)) {
-      $nopen_time = $nopen_time['date'] . ' ' . ($nopen_time['time'] ? '00:00' : $nopen_time['time']);
-    }
-    $nclose_time = $form_state['values']['nclose_time'];
-    if (is_array($nclose_time)) {
-      $nclose_time = $nclose_time['date'] . ' ' . ($nclose_time['time'] ? '00:00' : $nclose_time['time']);
-    }
+    $nopen_time = _election_normalize_datetime($form_state['values']['nopen_time']);
+    $nclose_time = _election_normalize_datetime($form_state['values']['nclose_time']);
     // Check that nominations and voting are not open at the same time.
     if ($nstatus == ELECTION_STATUS_OPEN && $vstatus == ELECTION_STATUS_OPEN) {
       form_set_error('vstatus', t('Voting should not be open at the same time as nominations.'));
@@ -213,12 +202,12 @@ function election_form_validate($form, &$form_state) {
     }
     // Check that the closing time is after the opening time.
     elseif ($nstatus == ELECTION_STATUS_SCHEDULED
-          && strtotime($nclose_time) <= strtotime($nopen_time)) {
+          && $nclose_time <= $nopen_time) {
       form_set_error('nschedule', t('The closing time of nominations must be after the opening time.'));
     }
     // Check that the voting time is after the nominations close.
-    elseif (@$vstatus == ELECTION_STATUS_SCHEDULED
-          && strtotime($vopen_time) < strtotime($nclose_time)) {
+    elseif ($vstatus == ELECTION_STATUS_SCHEDULED
+          && $vopen_time < $nclose_time) {
       form_set_error('nschedule', t('Nominations can only be scheduled so that they close before the start of voting.'));
     }
   }

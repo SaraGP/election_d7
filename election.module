@@ -932,3 +932,30 @@ function _election_pathauto_update_alias_multiple(array $election_ids, $op, arra
     drupal_set_message(format_plural(count($election_ids), 'Updated URL alias for 1 election.', 'Updated URL aliases for @count elections.'));
   }
 }
+
+/**
+ * Normalize a date and time provided in various formats.
+ *
+ * @param int|string|array $datetime
+ *   The date/time.
+ *
+ * @return int|false
+ *   A timestamp or FALSE on failure.
+ */
+function _election_normalize_datetime($datetime) {
+  if (is_numeric($datetime)) {
+    return (int) $datetime;
+  }
+  elseif (is_array($datetime)) {
+    if (!isset($datetime['date'])) {
+      return FALSE;
+    }
+    return strtotime($datetime['date'] . ' ' . (!empty($datetime['time']) ? $datetime['time'] : '00:00'));
+  }
+  elseif ((string) $datetime === '') {
+    return FALSE;
+  }
+  else {
+    return strtotime($datetime);
+  }
+}

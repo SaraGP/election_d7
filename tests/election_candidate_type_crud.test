@@ -35,6 +35,7 @@ class ElectionCandidateTypeCrudTestCase extends DrupalWebTestCase {
     // Create a user who has the appropriate permissions for this test.
     $test_user = $this->drupalCreateUser(array(
       'administer candidate types',
+      'administer fields',
     ));
     // Log in as that user.
     $this->drupalLogin($test_user);

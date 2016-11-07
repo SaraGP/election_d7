@@ -27,7 +27,6 @@ function election_post_schema() {
         'description' => 'The {election}.election_id for this post.',
         'type' => 'int',
         'unsigned' => TRUE,
-        'not null' => FALSE,
       ),
       'type' => array(
         'description' => 'The type of the election post (machine name).',
@@ -45,14 +44,12 @@ function election_post_schema() {
         'description' => 'The title of the post.',
         'type' => 'varchar',
         'length' => 255,
-        'not null' => FALSE,
       ),
       'rids' => array(
         'description' => 'A serialized array of roles that may vote for this post.',
         'type' => 'blob',
         'size' => 'normal',
         'serialize' => TRUE,
-        'not null' => FALSE,
       ),
       'allow_abstention' => array(
         'description' => 'Whether or not to allow voters to abstain.',
@@ -101,14 +98,12 @@ function election_post_schema() {
       'changed' => array(
         'description' => 'The Unix timestamp for when the post was most recently changed.',
         'type' => 'int',
-        'not null' => FALSE,
       ),
       'settings' => array(
         'description' => 'A serialized array of any further settings for this post.',
         'type' => 'blob',
         'size' => 'normal',
         'serialize' => TRUE,
-        'not null' => FALSE,
       ),
     ),
     'primary key' => array('post_id'),
@@ -182,7 +177,6 @@ function election_post_update_7102() {
     'type' => 'blob',
     'size' => 'normal',
     'serialize' => TRUE,
-    'not null' => FALSE,
   ));
 }
 

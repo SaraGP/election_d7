@@ -26,13 +26,11 @@ function election_candidate_schema() {
         'description' => 'The post for which the candidate is standing. Relates to {election_post}.post_id.',
         'type' => 'int',
         'unsigned' => TRUE,
-        'not null' => FALSE,
       ),
       'election_id' => array(
         'description' => 'The election in which the candidate is standing. Relates to {election}.election_id.',
         'type' => 'int',
         'unsigned' => TRUE,
-        'not null' => FALSE,
       ),
       'type' => array(
         'description' => 'The {election_candidate_type}.type of this candidate.',
@@ -67,7 +65,6 @@ function election_candidate_schema() {
         'description' => 'The {users}.uid of the candidate.',
         'type' => 'int',
         'unsigned' => TRUE,
-        'not null' => FALSE,
       ),
       'created' => array(
         'description' => 'The Unix timestamp for when the candidate was created/nominated.',
@@ -78,7 +75,6 @@ function election_candidate_schema() {
       'changed' => array(
         'description' => 'The Unix timestamp for when the candidate was most recently changed.',
         'type' => 'int',
-        'not null' => FALSE,
       ),
     ),
     'primary key' => array('candidate_id'),
@@ -144,11 +140,9 @@ function election_candidate_schema() {
         'description' => 'The name of the providing module if the entity has been defined in code.',
         'type' => 'varchar',
         'length' => 255,
-        'not null' => FALSE,
       ),
       'data' => array(
         'type' => 'text',
-        'not null' => FALSE,
         'size' => 'big',
         'serialize' => TRUE,
         'description' => 'A serialized array of additional data related to this candidate type.',
@@ -273,11 +267,9 @@ function election_candidate_update_7002() {
         'description' => 'The name of the providing module if the entity has been defined in code.',
         'type' => 'varchar',
         'length' => 255,
-        'not null' => FALSE,
       ),
       'data' => array(
         'type' => 'text',
-        'not null' => FALSE,
         'size' => 'big',
         'serialize' => TRUE,
         'description' => 'A serialized array of additional data related to this candidate type.',
@@ -506,7 +498,6 @@ function election_candidate_update_7105() {
       'type' => 'varchar',
       'description' => 'The candidate\'s e-mail address [OBSOLETE].',
       'length' => 254,
-      'not null' => FALSE,
     ));
   }
 }

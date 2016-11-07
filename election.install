@@ -32,13 +32,11 @@ function election_schema() {
         'description' => 'The title of the election - a human-readable identifier.',
         'type' => 'varchar',
         'length' => 255,
-        'not null' => FALSE,
       ),
       'uid' => array(
         'description' => 'The {users}.uid of the election\'s owner/creator.',
         'type' => 'int',
         'unsigned' => TRUE,
-        'not null' => FALSE,
       ),
       'published' => array(
         'description' => 'Allows view access to all those with the "view published elections" permission.',
@@ -62,12 +60,10 @@ function election_schema() {
       'vopen_time' => array(
         'description' => 'The Unix timestamp for when voting opens (if scheduled).',
         'type' => 'int',
-        'not null' => FALSE,
       ),
       'vclose_time' => array(
         'description' => 'The Unix timestamp for when voting closes (if scheduled).',
         'type' => 'int',
-        'not null' => FALSE,
       ),
       'nstatus' => array(
         'description' => sprintf(
@@ -84,19 +80,16 @@ function election_schema() {
       'nopen_time' => array(
         'description' => 'The Unix timestamp for when nominations open (if scheduled).',
         'type' => 'int',
-        'not null' => FALSE,
       ),
       'nclose_time' => array(
         'description' => 'The Unix timestamp for when nominations close (if scheduled).',
         'type' => 'int',
-        'not null' => FALSE,
       ),
       'settings' => array(
         'description' => 'A serialized array of any further settings for this election.',
         'type' => 'blob',
         'size' => 'normal',
         'serialize' => TRUE,
-        'not null' => FALSE,
       ),
       'created' => array(
         'description' => 'The Unix timestamp for when the election was created.',
@@ -107,7 +100,6 @@ function election_schema() {
       'changed' => array(
         'description' => 'The Unix timestamp for when the election was most recently changed.',
         'type' => 'int',
-        'not null' => FALSE,
       ),
     ),
     'primary key' => array('election_id'),
@@ -200,7 +192,6 @@ function election_update_7104() {
     'type' => 'blob',
     'size' => 'normal',
     'serialize' => TRUE,
-    'not null' => FALSE,
   ));
 }
 

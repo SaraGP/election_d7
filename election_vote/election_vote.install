@@ -26,19 +26,16 @@ function election_vote_schema() {
         'description' => 'The election in which the vote was cast. Relates to {election}.election_id.',
         'type' => 'int',
         'unsigned' => TRUE,
-        'not null' => FALSE,
       ),
       'post_id' => array(
         'description' => 'Relates to {election_post}.post_id.',
         'type' => 'int',
         'unsigned' => TRUE,
-        'not null' => FALSE,
       ),
       'ballot_id' => array(
         'description' => 'Relates to {election_ballot}.ballot_id.',
         'type' => 'int',
         'unsigned' => TRUE,
-        'not null' => FALSE,
       ),
       'answer' => array(
         'description' => sprintf(
@@ -48,18 +45,15 @@ function election_vote_schema() {
         ),
         'type' => 'int',
         'size' => 'tiny',
-        'not null' => FALSE,
       ),
       'candidate_id' => array(
         'description' => 'For ranked elections: the candidate being ranked.',
         'type' => 'int',
         'unsigned' => TRUE,
-        'not null' => FALSE,
       ),
       'rank' => array(
         'description' => 'For ranked elections: the rank of the candidate in the ballot.',
         'type' => 'int',
-        'not null' => FALSE,
       ),
       'ron' => array(
         'description' => 'For ranked elections: whether or not the candidate being ranked is RON (Re-Open Nominations).',
@@ -108,13 +102,11 @@ function election_vote_schema() {
         'description' => 'The election in which the ballot was cast. Relates to {election}.election_id.',
         'type' => 'int',
         'unsigned' => TRUE,
-        'not null' => FALSE,
       ),
       'post_id' => array(
         'description' => 'The post for which the ballot was cast. Relates to {election_post}.post_id.',
         'type' => 'int',
         'unsigned' => TRUE,
-        'not null' => FALSE,
       ),
       // Note that multiple ballots can be cast per UID. This is partly because
       // voting by anonymous users is supported (where the UID is always 0), and
@@ -126,13 +118,11 @@ function election_vote_schema() {
         'description' => 'The {users}.uid of the voter.',
         'type' => 'int',
         'unsigned' => TRUE,
-        'not null' => FALSE,
       ),
       'ip' => array(
         'description' => 'The IP address of the voter (v4 or v6).',
         'type' => 'varchar',
         'length' => 255,
-        'not null' => FALSE,
       ),
       'agent' => array(
         'description' => 'The HTTP User Agent of the voter.',

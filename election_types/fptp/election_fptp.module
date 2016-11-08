@@ -35,8 +35,14 @@ function election_fptp_vote_form(&$form, &$form_state) {
     '#type' => 'fieldset',
     '#title' => t('Your ballot paper'),
     '#attributes' => array('class' => array('election-ballot-paper')),
-    '#description' => t('Please select your preferred candidate from the list.'),
   );
+
+  if ((int) $post->vacancy_count === 1) {
+    $form['ballot_paper']['#description'] = t('Please select your preferred candidate from the list.');
+  }
+  else {
+    $form['ballot_paper']['#description'] = t('Please select your preferred candidate(s) from the list. You may vote for up-to %vacancy_count candidates.', array('%vacancy_count' => (int) $post->vacancy_count));
+  }
 
   if (count($candidates) > 1) {
     $form['ballot_paper']['#description'] .= ' ' . t('Candidates are displayed in a random order.');
@@ -67,6 +73,16 @@ function election_fptp_vote_form(&$form, &$form_state) {
     '#required' => TRUE,
   );
 
+  // For multiple vacancies use checkboxes or select multiple.
+  if ((int) $post->vacancy_count > 1) {
+    if ($form['ballot_paper']['candidate_id']['#type'] === 'radios') {
+      $form['ballot_paper']['candidate_id']['#type'] = 'checkboxes';
+    }
+    else {
+      $form['ballot_paper']['candidate_id']['#multiple'] = TRUE;
+    }
+  }
+
   $form['#validate'][] = 'election_fptp_vote_form_validate';
 
 }
@@ -75,11 +91,30 @@ function election_fptp_vote_form(&$form, &$form_state) {
  * Validate the voting form.
  */
 function election_fptp_vote_form_validate($form, &$form_state) {
+  $candidate_votes = array();
+  // Will be array when using checkboxes, which means multiple vacancies.
+  if (is_array($form_state['values']['candidate_id'])) {
+    foreach ($form_state['values']['candidate_id'] as $candidate_id => $vote) {
+      if ($vote) {
+        $candidate_votes[] = $candidate_id;
+      }
+    }
+  }
+  else {
+    if ($form_state['values']['candidate_id']) {
+      $candidate_votes[] = $form_state['values']['candidate_id'];
+    }
+  }
+
+  $votes_cast = count($candidate_votes);
+  $vacancy_count = (int) $form_state['post']->vacancy_count;
+  if ($votes_cast > $vacancy_count) {
+    form_set_error('', t('You may vote for no more than %vacancy_count candidates.', array('%vacancy_count' => $vacancy_count)));
+  }
 
   // Add 'candidate_id' to $form_state (so it's available when
   // confirming/saving votes).
-  $form_state['candidate_id'] = $form_state['values']['candidate_id'];
-
+  $form_state['candidate_votes'] = $candidate_votes;
 }
 
 /**
@@ -91,13 +126,15 @@ function election_fptp_preprocess_election_vote_confirm(&$variables) {
   $election = $form_state['election'];
 
   if ($election->type == 'fptp') {
-    $candidate = election_candidate_load($form_state['candidate_id']);
+    foreach ($form_state['candidate_votes'] as $candidate_id) {
+      $voted_for[$candidate_id] = election_candidate_get_name($form_state['candidates'][$candidate_id]);
+    }
 
     $variables['confirm']['candidate'] = array(
-      '#type' => 'item',
-      '#title' => t('Your chosen candidate'),
-      // The candidate's name will already be sanitized.
-      '#markup' => election_candidate_get_name($candidate),
+      '#theme' => 'item_list',
+      '#title' => format_plural(count($voted_for), 'Your chosen candidate:', 'Your chosen candidates:'),
+      '#type' => 'ul',
+      '#items' => $voted_for,
     );
   }
 
@@ -114,15 +151,17 @@ function election_fptp_election_vote_fptp_save($ballot_id, $post, $vote_form, $v
     'ballot_id' => $ballot_id,
     'election_id' => $post->election_id,
     'post_id' => $post->post_id,
-    'candidate_id' => $vote_form_state['candidate_id'],
+    'candidate_id' => NULL,
   );
 
-  $success = db_insert('election_vote')
-    ->fields($vote_entry)
-    ->execute();
+  $query = db_insert('election_vote')
+    ->fields(array_keys($vote_entry));
+  foreach ($vote_form_state['candidate_votes'] as $cid) {
+    $vote_entry['candidate_id'] = $cid;
+    $query->values($vote_entry);
+  }
 
-  return $success ? TRUE : FALSE;
-
+  return (bool) $query->execute();
 }
 
 /**
@@ -137,10 +176,6 @@ function election_fptp_form_election_post_form_alter(&$form, &$form_state) {
   if ($election->type != 'fptp') {
     return;
   }
-
-  // The number of vacancies can only be 1.
-  $form['candidates_nominations']['vacancy_count']['#type'] = 'value';
-  $form['candidates_nominations']['vacancy_count']['#value'] = 1;
 
   $form['voting']['settings_vote_form_type'] = array(
     '#type' => 'select',

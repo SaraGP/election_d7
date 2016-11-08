@@ -96,8 +96,17 @@ function election_candidate_entity_info_alter(&$entity_info) {
 
 /**
  * Get a list of defined candidate types.
+ *
+ * @return array
+ *   See entity_load_multiple_by_name().
  */
 function election_candidate_get_types($type_name = NULL) {
+  // Avoid WSOD if entity_load_multiple_by_name() does not find any entities.
+  // This can be removed if either #1982810 or #1667536 is resolved.
+  if (!entity_get_info('election_candidate_type')) {
+    return array();
+  }
+
   $types = entity_load_multiple_by_name('election_candidate_type', isset($type_name) ? array($type_name) : FALSE);
   return isset($type_name) ? reset($types) : $types;
 }

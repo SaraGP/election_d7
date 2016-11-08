@@ -97,7 +97,6 @@ function election_schema() {
         'description' => 'The Unix timestamp for when the election was created.',
         'type' => 'int',
         'not null' => TRUE,
-        'default' => 0,
       ),
       'changed' => array(
         'description' => 'The Unix timestamp for when the election was most recently changed.',
@@ -222,4 +221,16 @@ function election_update_7106() {
     'type' => 'int',
     'not null' => TRUE,
   ));
+}
+
+/**
+ * Remove unneccessary default values from database schema.
+ */
+function election_update_7107() {
+  db_drop_index('election', 'created');
+  db_change_field('election', 'created', 'created', array(
+    'description' => 'The Unix timestamp for when the election was created.',
+    'type' => 'int',
+    'not null' => TRUE,
+  ), array('indexes' => array('created' => array('created'))));
 }

@@ -130,24 +130,20 @@ function election_vote_schema() {
         'length' => 255,
       ),
       'agent' => array(
-        'description' => 'The HTTP User Agent of the voter.',
+        'description' => 'The HTTP User Agent of the voter. NULL means the user agent is not known.',
         'type' => 'varchar',
         'length' => 255,
-        'not null' => TRUE,
-        'default' => '',
       ),
       'sid_hash' => array(
         'description' => 'An MD5 hash of the voter\'s session ID.',
         'type' => 'varchar',
         'length' => 32,
         'not null' => TRUE,
-        'default' => '',
       ),
       'timestamp' => array(
         'description' => 'A UNIX timestamp for when the ballot was cast.',
         'type' => 'int',
         'not null' => TRUE,
-        'default' => 0,
       ),
       'abstain' => array(
         'description' => 'Whether or not the voter abstained.',
@@ -326,4 +322,31 @@ function election_vote_update_7107() {
     'unsigned' => TRUE,
     'not null' => TRUE,
   ), array('indexes' => array('post_id' => array('post_id'))));
+}
+
+/**
+ * Remove unneccessary default values from database schema.
+ */
+function election_vote_update_7108() {
+  db_drop_index('election_ballot', 'agent');
+  db_change_field('election_ballot', 'agent', 'agent', array(
+    'description' => 'The HTTP User Agent of the voter. NULL means the user agent is not known.',
+    'type' => 'varchar',
+    'length' => 255,
+  ), array('indexes' => array('agent' => array('agent'))));
+
+  db_drop_index('election_ballot', 'sid_hash');
+  db_change_field('election_ballot', 'sid_hash', 'sid_hash', array(
+    'description' => 'An MD5 hash of the voter\'s session ID.',
+    'type' => 'varchar',
+    'length' => 32,
+    'not null' => TRUE,
+  ), array('indexes' => array('sid_hash' => array('sid_hash'))));
+
+  db_drop_index('election_ballot', 'timestamp');
+  db_change_field('election_ballot', 'timestamp', 'timestamp', array(
+    'description' => 'A UNIX timestamp for when the ballot was cast.',
+    'type' => 'int',
+    'not null' => TRUE,
+  ), array('indexes' => array('timestamp' => array('timestamp'))));
 }

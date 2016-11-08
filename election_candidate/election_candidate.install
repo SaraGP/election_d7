@@ -39,7 +39,6 @@ function election_candidate_schema() {
         'type' => 'varchar',
         'length' => 255,
         'not null' => TRUE,
-        'default' => '',
       ),
       'published' => array(
         'description' => 'Allows anyone who can view the election to view this candidate.',
@@ -72,7 +71,6 @@ function election_candidate_schema() {
         'description' => 'The Unix timestamp for when the candidate was created/nominated.',
         'type' => 'int',
         'not null' => TRUE,
-        'default' => 0,
       ),
       'changed' => array(
         'description' => 'The Unix timestamp for when the candidate was most recently changed.',
@@ -123,7 +121,6 @@ function election_candidate_schema() {
         'type' => 'varchar',
         'length' => 255,
         'not null' => TRUE,
-        'default' => '',
       ),
       'weight' => array(
         'type' => 'int',
@@ -526,6 +523,32 @@ function election_candidate_update_7106() {
   db_change_field('election_candidate', 'changed', 'changed', array(
     'description' => 'The Unix timestamp for when the candidate was most recently changed.',
     'type' => 'int',
+    'not null' => TRUE,
+  ));
+}
+
+/**
+ * Remove unneccessary default values from database schema.
+ */
+function election_candidate_update_7107() {
+  db_change_field('election_candidate', 'type', 'type', array(
+    'description' => 'The {election_candidate_type}.type of this candidate.',
+    'type' => 'varchar',
+    'length' => 255,
+    'not null' => TRUE,
+  ));
+
+  db_drop_index('election_candidate', 'created');
+  db_change_field('election_candidate', 'created', 'created', array(
+    'description' => 'The Unix timestamp for when the candidate was created/nominated.',
+    'type' => 'int',
+    'not null' => TRUE,
+  ), array('indexes' => array('created' => array('created'))));
+
+  db_change_field('election_candidate_type', 'label', 'label', array(
+    'description' => 'The human-readable name of this type.',
+    'type' => 'varchar',
+    'length' => 255,
     'not null' => TRUE,
   ));
 }

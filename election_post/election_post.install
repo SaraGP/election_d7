@@ -106,7 +106,7 @@ function election_post_schema() {
         'not null' => TRUE,
       ),
       'settings' => array(
-        'description' => 'A serialized array of any further settings for this post.',
+        'description' => 'A serialized array of any further settings for this post. NULL means there are no further settings.',
         'type' => 'blob',
         'size' => 'normal',
         'serialize' => TRUE,

@@ -24,7 +24,7 @@ function election_candidate_schema() {
         'not null' => TRUE,
       ),
       'post_id' => array(
-        'description' => 'The post for which the candidate is standing. Relates to {election_post}.post_id.',
+        'description' => 'The post for which the candidate is standing. Relates to {election_post}.post_id. NULL means the post has been deleted.',
         'type' => 'int',
         'unsigned' => TRUE,
       ),
@@ -64,7 +64,7 @@ function election_candidate_schema() {
         'default' => ELECTION_CANDIDATE_HOPEFUL,
       ),
       'uid' => array(
-        'description' => 'The {users}.uid of the candidate.',
+        'description' => 'The {users}.uid of the candidate. NULL means the candidate does not have a uid.',
         'type' => 'int',
         'unsigned' => TRUE,
       ),
@@ -140,7 +140,7 @@ function election_candidate_schema() {
         'description' => 'The exportable status of the entity.',
       ),
       'module' => array(
-        'description' => 'The name of the providing module if the entity has been defined in code.',
+        'description' => 'The name of the providing module if the entity has been defined in code. NULL means it is not defined in code.',
         'type' => 'varchar',
         'length' => 255,
       ),
@@ -148,7 +148,7 @@ function election_candidate_schema() {
         'type' => 'text',
         'size' => 'big',
         'serialize' => TRUE,
-        'description' => 'A serialized array of additional data related to this candidate type.',
+        'description' => 'A serialized array of additional data related to this candidate type. NULL means there is no additional data.',
       ),
     ),
     'primary key' => array('id'),

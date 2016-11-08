@@ -36,7 +36,7 @@ function election_schema() {
         'not null' => TRUE,
       ),
       'uid' => array(
-        'description' => 'The {users}.uid of the election\'s owner/creator.',
+        'description' => 'The {users}.uid of the election\'s owner/creator. NULL means the user has been deleted.',
         'type' => 'int',
         'unsigned' => TRUE,
       ),
@@ -60,11 +60,11 @@ function election_schema() {
         'default' => ELECTION_STATUS_CLOSED,
       ),
       'vopen_time' => array(
-        'description' => 'The Unix timestamp for when voting opens (if scheduled).',
+        'description' => 'The Unix timestamp for when voting opens (if scheduled). NULL means it is not scheduled.',
         'type' => 'int',
       ),
       'vclose_time' => array(
-        'description' => 'The Unix timestamp for when voting closes (if scheduled).',
+        'description' => 'The Unix timestamp for when voting closes (if scheduled). NULL means it is not scheduled.',
         'type' => 'int',
       ),
       'nstatus' => array(
@@ -80,15 +80,15 @@ function election_schema() {
         'default' => ELECTION_STATUS_CLOSED,
       ),
       'nopen_time' => array(
-        'description' => 'The Unix timestamp for when nominations open (if scheduled).',
+        'description' => 'The Unix timestamp for when nominations open (if scheduled). NULL means it is not scheduled.',
         'type' => 'int',
       ),
       'nclose_time' => array(
-        'description' => 'The Unix timestamp for when nominations close (if scheduled).',
+        'description' => 'The Unix timestamp for when nominations close (if scheduled). NULL means it is not scheduled.',
         'type' => 'int',
       ),
       'settings' => array(
-        'description' => 'A serialized array of any further settings for this election.',
+        'description' => 'A serialized array of any further settings for this election. NULL means there are no further settings.',
         'type' => 'blob',
         'size' => 'normal',
         'serialize' => TRUE,

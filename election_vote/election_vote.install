@@ -36,13 +36,13 @@ function election_vote_schema() {
         'not null' => TRUE,
       ),
       'ballot_id' => array(
-        'description' => 'Relates to {election_ballot}.ballot_id.',
+        'description' => 'Relates to {election_ballot}.ballot_id. NULL means the vote is fully anonymized.',
         'type' => 'int',
         'unsigned' => TRUE,
       ),
       'answer' => array(
         'description' => sprintf(
-          'For referendums: the answer (no %d or yes %d).',
+          'For referendums: the answer (no %d or yes %d). NULL means it is not a referendum.',
           ELECTION_ANSWER_NO,
           ELECTION_ANSWER_YES
         ),
@@ -50,12 +50,12 @@ function election_vote_schema() {
         'size' => 'tiny',
       ),
       'candidate_id' => array(
-        'description' => 'For ranked elections: the candidate being ranked.',
+        'description' => 'For ranked elections: the candidate being ranked. NULL means it is not a ranked election.',
         'type' => 'int',
         'unsigned' => TRUE,
       ),
       'rank' => array(
-        'description' => 'For ranked elections: the rank of the candidate in the ballot.',
+        'description' => 'For ranked elections: the rank of the candidate in the ballot. NULL means it is not a ranked election.',
         'type' => 'int',
       ),
       'ron' => array(
@@ -120,12 +120,12 @@ function election_vote_schema() {
       // uniqueness of votes is ensured in PHP code rather than at the database
       // level. See <https://www.drupal.org/node/2627710>.
       'uid' => array(
-        'description' => 'The {users}.uid of the voter.',
+        'description' => 'The {users}.uid of the voter. NULL means the user is not stored to maintain anonimity.',
         'type' => 'int',
         'unsigned' => TRUE,
       ),
       'ip' => array(
-        'description' => 'The IP address of the voter (v4 or v6).',
+        'description' => 'The IP address of the voter (v4 or v6). NULL means the IP is not stored to maintain anonimity.',
         'type' => 'varchar',
         'length' => 255,
       ),

@@ -28,11 +28,13 @@ function election_post_schema() {
         'description' => 'The {election}.election_id for this post.',
         'type' => 'int',
         'unsigned' => TRUE,
+        'not null' => TRUE,
       ),
       'type' => array(
         'description' => 'The type of the election post (machine name).',
         'type' => 'varchar',
         'length' => 100,
+        'not null' => TRUE,
       ),
       'published' => array(
         'description' => 'Allows anyone who can view the election to view this post.',
@@ -45,12 +47,14 @@ function election_post_schema() {
         'description' => 'The title of the post.',
         'type' => 'varchar',
         'length' => 255,
+        'not null' => TRUE,
       ),
       'rids' => array(
         'description' => 'A serialized array of roles that may vote for this post.',
         'type' => 'blob',
         'size' => 'normal',
         'serialize' => TRUE,
+        'not null' => TRUE,
       ),
       'allow_abstention' => array(
         'description' => 'Whether or not to allow voters to abstain.',
@@ -99,6 +103,7 @@ function election_post_schema() {
       'changed' => array(
         'description' => 'The Unix timestamp for when the post was most recently changed.',
         'type' => 'int',
+        'not null' => TRUE,
       ),
       'settings' => array(
         'description' => 'A serialized array of any further settings for this post.',
@@ -277,4 +282,47 @@ function election_post_update_7107() {
  */
 function election_post_update_7108() {
   db_update('election_post')->fields(array('published' => 1))->execute();
+}
+
+/**
+ * Make certain columns NOT NULL.
+ */
+function election_post_update_7109() {
+  db_drop_index('election_post', 'election_id');
+  db_change_field('election_post', 'election_id', 'election_id', array(
+    'description' => 'The {election}.election_id for this post.',
+    'type' => 'int',
+    'unsigned' => TRUE,
+    'not null' => TRUE,
+  ), array('indexes' => array('election_id' => array('election_id'))));
+
+  db_drop_index('election_post', 'type');
+  db_change_field('election_post', 'type', 'type', array(
+    'description' => 'The type of the election post (machine name).',
+    'type' => 'varchar',
+    'length' => 100,
+    'not null' => TRUE,
+  ), array('indexes' => array('type' => array('type'))));
+
+  db_drop_index('election_post', 'title');
+  db_change_field('election_post', 'title', 'title', array(
+    'description' => 'The title of the post.',
+    'type' => 'varchar',
+    'length' => 255,
+    'not null' => TRUE,
+  ), array('indexes' => array('title' => array('title'))));
+
+  db_change_field('election_post', 'rids', 'rids', array(
+    'description' => 'A serialized array of roles that may vote for this post.',
+    'type' => 'blob',
+    'size' => 'normal',
+    'serialize' => TRUE,
+    'not null' => TRUE,
+  ));
+
+  db_change_field('election_post', 'changed', 'changed', array(
+    'description' => 'The Unix timestamp for when the post was most recently changed.',
+    'type' => 'int',
+    'not null' => TRUE,
+  ));
 }

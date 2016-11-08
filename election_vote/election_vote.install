@@ -27,11 +27,13 @@ function election_vote_schema() {
         'description' => 'The election in which the vote was cast. Relates to {election}.election_id.',
         'type' => 'int',
         'unsigned' => TRUE,
+        'not null' => TRUE,
       ),
       'post_id' => array(
         'description' => 'Relates to {election_post}.post_id.',
         'type' => 'int',
         'unsigned' => TRUE,
+        'not null' => TRUE,
       ),
       'ballot_id' => array(
         'description' => 'Relates to {election_ballot}.ballot_id.',
@@ -103,11 +105,13 @@ function election_vote_schema() {
         'description' => 'The election in which the ballot was cast. Relates to {election}.election_id.',
         'type' => 'int',
         'unsigned' => TRUE,
+        'not null' => TRUE,
       ),
       'post_id' => array(
         'description' => 'The post for which the ballot was cast. Relates to {election_post}.post_id.',
         'type' => 'int',
         'unsigned' => TRUE,
+        'not null' => TRUE,
       ),
       // Note that multiple ballots can be cast per UID. This is partly because
       // voting by anonymous users is supported (where the UID is always 0), and
@@ -284,4 +288,42 @@ function election_vote_update_7006() {
   if (db_index_exists('election_ballot', 'one_vote_per_person')) {
     db_drop_unique_key('election_ballot', 'one_vote_per_person');
   }
+}
+
+/**
+ * Make certain columns NOT NULL.
+ */
+function election_vote_update_7107() {
+  db_drop_index('election_vote', 'election_id');
+  db_change_field('election_vote', 'election_id', 'election_id', array(
+    'description' => 'The election in which the vote was cast. Relates to {election}.election_id.',
+    'type' => 'int',
+    'unsigned' => TRUE,
+    'not null' => TRUE,
+  ), array('indexes' => array('election_id' => array('election_id'))));
+
+  db_drop_index('election_vote', 'post_id');
+  db_change_field('election_vote', 'post_id', 'post_id', array(
+    'description' => 'Relates to {election_post}.post_id.',
+    'type' => 'int',
+    'unsigned' => TRUE,
+    'not null' => TRUE,
+  ), array('indexes' => array('post_id' => array('post_id'))));
+
+
+  db_drop_index('election_ballot', 'election_id');
+  db_change_field('election_ballot', 'election_id', 'election_id', array(
+    'description' => 'The election in which the ballot was cast. Relates to {election}.election_id.',
+    'type' => 'int',
+    'unsigned' => TRUE,
+    'not null' => TRUE,
+  ), array('indexes' => array('election_id' => array('election_id'))));
+
+  db_drop_index('election_ballot', 'post_id');
+  db_change_field('election_ballot', 'post_id', 'post_id', array(
+    'description' => 'The post for which the ballot was cast. Relates to {election_post}.post_id.',
+    'type' => 'int',
+    'unsigned' => TRUE,
+    'not null' => TRUE,
+  ), array('indexes' => array('post_id' => array('post_id'))));
 }

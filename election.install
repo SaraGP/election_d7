@@ -33,6 +33,7 @@ function election_schema() {
         'description' => 'The title of the election - a human-readable identifier.',
         'type' => 'varchar',
         'length' => 255,
+        'not null' => TRUE,
       ),
       'uid' => array(
         'description' => 'The {users}.uid of the election\'s owner/creator.',
@@ -101,6 +102,7 @@ function election_schema() {
       'changed' => array(
         'description' => 'The Unix timestamp for when the election was most recently changed.',
         'type' => 'int',
+        'not null' => TRUE,
       ),
     ),
     'primary key' => array('election_id'),
@@ -201,4 +203,23 @@ function election_update_7104() {
  */
 function election_update_7105() {
   registry_rebuild();
+}
+
+/**
+ * Make certain columns NOT NULL.
+ */
+function election_update_7106() {
+  db_drop_index('election', 'title');
+  db_change_field('election', 'title', 'title', array(
+    'description' => 'The title of the election - a human-readable identifier.',
+    'type' => 'varchar',
+    'length' => 255,
+    'not null' => TRUE,
+  ), array('indexes' => array('title' => array('title'))));
+
+  db_change_field('election', 'changed', 'changed', array(
+    'description' => 'The Unix timestamp for when the election was most recently changed.',
+    'type' => 'int',
+    'not null' => TRUE,
+  ));
 }

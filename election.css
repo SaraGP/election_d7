@@ -131,6 +131,10 @@
   font-size: 1em;
   padding: 0.3em 0.5em;
 }
+/* Leave room for button next to post title. */
+.election-post > h3 {
+  margin-right: 3em;
+}
 
 /* Election vote access explanation */
 .election-vote-access-passed {

@@ -15,8 +15,8 @@ function election_vote_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('election_vote_form', 1),
     'file' => 'election_vote.forms.inc',
-    'access callback' => 'election_vote_access',
-    'access arguments' => array('vote', 1),
+    'access callback' => 'election_post_access',
+    'access arguments' => array('view', 1),
     'type' => MENU_CALLBACK,
   );
 

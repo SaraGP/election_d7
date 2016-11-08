@@ -18,6 +18,10 @@
  * the same time.
  */
 function election_vote_form($form, &$form_state, stdClass $post) {
+  // Redirect to post if no access to vote, such as it being closed.
+  if (!election_vote_access('vote', $post)) {
+    drupal_goto(election_post_uri_path($post));
+  }
 
   if (isset($form_state['vote_require_confirm'])) {
     return election_vote_form_vote_confirm($form, $form_state);

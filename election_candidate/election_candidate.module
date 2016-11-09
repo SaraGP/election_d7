@@ -277,6 +277,22 @@ function election_candidate_access_per_post($op, stdClass $post, $account = NULL
  */
 function election_candidate_menu() {
   $items = array();
+  $items['election-candidate/%'] = array(
+    'page callback' => 'drupal_not_found',
+    'access callback' => TRUE,
+  );
+  $items['election-candidate/%/%'] = array(
+    'page callback' => 'drupal_not_found',
+    'access callback' => TRUE,
+  );
+  $items['election-candidate/%/%/%'] = array(
+    'page callback' => 'drupal_not_found',
+    'access callback' => TRUE,
+  );
+  $items['election-candidate/%/%/%/%'] = array(
+    'page callback' => 'drupal_not_found',
+    'access callback' => TRUE,
+  );
 
   $items['election-post/%election_post/nomination-form'] = array(
     'title' => 'Nomination form',

@@ -10,6 +10,18 @@
 function election_post_menu() {
 
   $items = array();
+  $items['election-post/%'] = array(
+    'page callback' => 'drupal_not_found',
+    'access callback' => TRUE,
+  );
+  $items['election-post/%/%'] = array(
+    'page callback' => 'drupal_not_found',
+    'access callback' => TRUE,
+  );
+  $items['election-post/%/%/%'] = array(
+    'page callback' => 'drupal_not_found',
+    'access callback' => TRUE,
+  );
 
   $items['election/%election/posts-admin'] = array(
     'title callback' => 'election_post_page_manage_title',

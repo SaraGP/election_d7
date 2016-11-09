@@ -323,6 +323,18 @@ function election_access($op, $election = NULL, $account = NULL) {
 function election_menu() {
 
   $items = array();
+  $items['election/%'] = array(
+    'page callback' => 'drupal_not_found',
+    'access callback' => TRUE,
+  );
+  $items['election/%/%'] = array(
+    'page callback' => 'drupal_not_found',
+    'access callback' => TRUE,
+  );
+  $items['election/%/%/%'] = array(
+    'page callback' => 'drupal_not_found',
+    'access callback' => TRUE,
+  );
 
   $items['elections'] = array(
     'title' => 'Elections',

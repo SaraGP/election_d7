@@ -1,0 +1,8 @@
+name = Election type: First Past The Post
+description = "A First Past the Post election type: voters select a single choice, and the candidate with the most votes wins."
+package = Election types
+core = 7.x
+dependencies[] = election
+dependencies[] = election_post
+dependencies[] = election_candidate
+dependencies[] = election_vote

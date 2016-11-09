@@ -1,0 +1,238 @@
+<?php
+/**
+ * @file
+ * Primary module file for the election_fptp module.
+ */
+
+/**
+ * Form modifying function - voting form (election-post/%election_post/vote).
+ */
+function election_fptp_vote_form(&$form, &$form_state) {
+
+  $post = $form_state['post'];
+  $election = $post->election;
+
+  // Load candidates.
+  $candidates = election_candidate_load_by_post($post, array(ELECTION_CANDIDATE_HOPEFUL));
+  $form_state['candidates'] = $candidates;
+
+  if (!count($candidates)) {
+    drupal_set_message(t('Voting is currently closed: there are no published candidates standing for this @post.', array('@post' => election_get_post_name($election->type))), 'warning', FALSE);
+    $form['#disabled'] = TRUE;
+    drupal_goto(election_post_uri_path($post));
+  }
+
+  $form['post'] = array(
+    '#type' => 'item',
+    '#title' => drupal_ucfirst(election_get_post_name($election->type)),
+    '#markup' => t('@title (!view details)', array(
+        '@title' => $post->title,
+        '!view details' => l(t('view details'), election_post_uri_path($post)),
+      )),
+  );
+
+  $form['ballot_paper'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Your ballot paper'),
+    '#attributes' => array('class' => array('election-ballot-paper')),
+    '#description' => t('Please select your preferred candidate from the list.'),
+  );
+
+  if (count($candidates) > 1) {
+    $form['ballot_paper']['#description'] .= ' ' . t('Candidates are displayed in a random order.');
+  }
+
+  $form_type = isset($post->settings['vote_form_type']) ? $post->settings['vote_form_type'] : 'default';
+
+  // If there is no setting, decide on the best form type (select or radios).
+  if ($form_type == 'default' || !in_array($form_type, array('radios', 'select'))) {
+    $form_type = 'radios';
+    if (count($candidates) < 2 || count($candidates) > 10) {
+      $form_type = 'select';
+    }
+  }
+
+  $candidate_options = array();
+  foreach ($candidates as $candidate) {
+    // The form API will sanitize the candidate's name when the $form_type is
+    // 'select', but not when it's 'radios'.
+    $sanitize = $form_type != 'select';
+    $candidate_options[$candidate->candidate_id] = election_candidate_get_name($candidate, $sanitize);
+  }
+
+  $form['ballot_paper']['candidate_id'] = array(
+    '#type' => $form_type,
+    '#title' => t('Candidate'),
+    '#options' => $candidate_options,
+    '#required' => TRUE,
+  );
+
+  $form['#validate'][] = 'election_fptp_vote_form_validate';
+
+}
+
+/**
+ * Validate the voting form.
+ */
+function election_fptp_vote_form_validate($form, &$form_state) {
+
+  // Add 'candidate_id' to $form_state (so it's available when
+  // confirming/saving votes).
+  $form_state['candidate_id'] = $form_state['values']['candidate_id'];
+
+}
+
+/**
+ * Preprocess function for the voting confirmation page.
+ */
+function election_fptp_preprocess_election_vote_confirm(&$variables) {
+
+  $form_state = $variables['form_state'];
+  $election = $form_state['election'];
+
+  if ($election->type == 'fptp') {
+    $candidate = election_candidate_load($form_state['candidate_id']);
+
+    $variables['confirm']['candidate'] = array(
+      '#type' => 'item',
+      '#title' => t('Your chosen candidate'),
+      // The candidate's name will already be sanitized.
+      '#markup' => election_candidate_get_name($candidate),
+    );
+  }
+
+}
+
+/**
+ * Implements hook_election_vote_ELECTION_TYPE_save().
+ *
+ * Save votes for an FPTP election.
+ */
+function election_fptp_election_vote_fptp_save($ballot_id, $post, $vote_form, $vote_form_state) {
+
+  $vote_entry = array(
+    'ballot_id' => $ballot_id,
+    'election_id' => $post->election_id,
+    'post_id' => $post->post_id,
+    'candidate_id' => $vote_form_state['candidate_id'],
+  );
+
+  $success = db_insert('election_vote')
+    ->fields($vote_entry)
+    ->execute();
+
+  return $success ? TRUE : FALSE;
+
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Add FPTP-specific settings to the election post edit form.
+ */
+function election_fptp_form_election_post_form_alter(&$form, &$form_state) {
+  $post = $form_state['post'];
+
+  $election = $form_state['election'];
+  if ($election->type != 'fptp') {
+    return;
+  }
+
+  // The number of vacancies can only be 1.
+  $form['candidates_nominations']['vacancy_count']['#type'] = 'value';
+  $form['candidates_nominations']['vacancy_count']['#value'] = 1;
+
+  $form['voting']['settings_vote_form_type'] = array(
+    '#type' => 'select',
+    '#title' => t('Ballot form type'),
+    '#options' => array(
+      'default' => t('Default'),
+      'radios' => t('Radio buttons'),
+      'select' => t('Drop-down select options'),
+    ),
+    '#default_value' => isset($post->settings['vote_form_type']) ? $post->settings['vote_form_type'] : 'default',
+    '#description' => t('Default: radio buttons if there are 2-10 candidates; drop-down select options otherwise.'),
+  );
+
+}
+
+/**
+ * Count candidates's votes.
+ *
+ * @param object $post
+ *   The election post entity.
+ *
+ * @return array
+ *   An associative array where the keys are candidate IDs and the values are
+ *   the number of votes each candidate has received.
+ */
+function election_fptp_get_candidates_votes(stdClass $post) {
+  $query = db_select('election_candidate', 'ec')
+    ->condition('ec.post_id', $post->post_id)
+    ->condition('ec.cstatus', ELECTION_CANDIDATE_HOPEFUL, '>=')
+    ->fields('ec', array('candidate_id'));
+  $query->leftJoin('election_vote', 'ev', 'ev.candidate_id = ec.candidate_id');
+  $query->leftJoin('election_ballot', 'eb', 'eb.ballot_id = ev.ballot_id');
+  $query->addExpression('SUM(eb.value)', 'votes');
+  $query->orderBy('SUM(eb.value)', 'DESC');
+  $query->groupBy('ec.candidate_id');
+  return $query->execute()->fetchAllKeyed();
+}
+
+/**
+ * Alter the results page to display vote counts.
+ */
+function election_fptp_election_results_page_alter(&$output, stdClass $post) {
+
+  $election = $post->election;
+
+  if ($election->type != 'fptp') {
+    return;
+  }
+
+  // Count the candidates' votes.
+  $candidates_votes = election_fptp_get_candidates_votes($post);
+  $total_votes = array_sum($candidates_votes);
+
+  $candidates = election_candidate_load_multiple(array_keys($candidates_votes));
+
+  $rows = array();
+  foreach ($candidates_votes as $candidate_id => $votes) {
+    $candidate = $candidates[$candidate_id];
+    $row = array();
+
+    // There is a chance that the user viewing results does not have permission
+    // to view this candidate (the candidate might be unpublished). This would
+    // be a bizarre situation, but it still needs to be handled.
+    if (election_candidate_access('view', $candidate)) {
+      $row[] = l(election_candidate_get_name($candidate, FALSE), 'election-candidate/' . $candidate_id);
+    }
+    elseif (!$candidate->published) {
+      $row[] = t('Unpublished candidate');
+    }
+    else {
+      $row[] = t('Candidate (access not available)');
+    }
+
+    // Display the number of votes.
+    $row[] = number_format($votes);
+
+    // Display the proportion of votes.
+    if ($votes == 0) {
+      $row[] = '0%';
+    }
+    else {
+      $proportion = $total_votes ? $votes / $total_votes : 0;
+      $row[] = number_format($proportion * 100, 2) . '%';
+    }
+
+    $rows[] = $row;
+  }
+
+  $output['count'] = array(
+    '#theme' => 'table',
+    '#header' => array(t('Candidate'), t('Votes'), t('Proportion')),
+    '#rows' => $rows,
+  );
+
+}

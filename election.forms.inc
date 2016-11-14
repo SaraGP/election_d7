@@ -61,7 +61,6 @@ function election_form($form, &$form_state, stdClass $election) {
       '#type' => $date_widget,
       '#default_value' => $nopen_default ? date('Y-m-d H:i:s', $nopen_default) : NULL,
       '#date_format' => $date_format,
-      '#date_increment' => 5,
       '#date_year_range' => '-2:+5',
     );
     $form['nominations']['nschedule']['nclose_time'] = array(
@@ -69,7 +68,6 @@ function election_form($form, &$form_state, stdClass $election) {
       '#type' => $date_widget,
       '#default_value' => $nclose_default ? date('Y-m-d H:i:s', $nclose_default) : NULL,
       '#date_format' => $date_format,
-      '#date_increment' => 5,
       '#date_year_range' => '-2:+5',
     );
   }
@@ -103,7 +101,6 @@ function election_form($form, &$form_state, stdClass $election) {
     '#type' => $date_widget,
     '#default_value' => $vopen_default ? date('Y-m-d H:i:s', $vopen_default) : NULL,
     '#date_format' => $date_format,
-    '#date_increment' => 5,
     '#date_year_range' => '-2:+5',
   );
   $form['voting']['vschedule']['vclose_time'] = array(
@@ -111,7 +108,6 @@ function election_form($form, &$form_state, stdClass $election) {
     '#type' => $date_widget,
     '#default_value' => $vclose_default ? date('Y-m-d H:i:s', $vclose_default) : NULL,
     '#date_format' => $date_format,
-    '#date_increment' => 5,
     '#date_year_range' => '-2:+5',
   );
 

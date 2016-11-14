@@ -85,7 +85,7 @@ function election_vote_form($form, &$form_state, stdClass $post) {
     '#markup' => l(t('Clear form'), $_GET['q']),
   );
 
-  $form['#attached']['js'][] = drupal_get_path('module', 'election') . '/submit-single.min.js';
+  $form['#attached']['js'][] = drupal_get_path('module', 'election') . '/submit-single.js';
 
   // Allow the form to be modified via the election type's 'vote form' callback.
   if (!empty($election->type_info['vote form'])) {
@@ -116,7 +116,7 @@ function election_vote_form_vote_confirm($form, &$form_state) {
 
   $form['#submit'] = array('election_vote_form_vote');
 
-  $form['#attached']['js'][] = drupal_get_path('module', 'election') . '/submit-single.min.js';
+  $form['#attached']['js'][] = drupal_get_path('module', 'election') . '/submit-single.js';
 
   // confirm_form() ignores its third argument when $_GET['destination'] is set.
   unset($_GET['destination']);
@@ -137,7 +137,7 @@ function election_vote_form_vote_confirm($form, &$form_state) {
  */
 function election_vote_undo_form($form, &$form_state, $post) {
 
-  $form['#attached']['js'][] = drupal_get_path('module', 'election') . '/submit-single.min.js';
+  $form['#attached']['js'][] = drupal_get_path('module', 'election') . '/submit-single.js';
 
   $form_state['post'] = $post;
   $election = $post->election;
@@ -247,7 +247,7 @@ function election_vote_form_abstain_confirm($form, &$form_state) {
 
   $form['#submit'] = array('election_vote_form_abstain');
 
-  $form['#attached']['js'][] = drupal_get_path('module', 'election') . '/submit-single.min.js';
+  $form['#attached']['js'][] = drupal_get_path('module', 'election') . '/submit-single.js';
 
   // confirm_form() ignores its third argument when $_GET['destination'] is set.
   unset($_GET['destination']);

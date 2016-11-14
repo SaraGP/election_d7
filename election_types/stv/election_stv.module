@@ -190,7 +190,7 @@ function election_stv_vote_form(&$form, &$form_state) {
     '#markup' => '</table>',
   );
 
-  $form['#attached']['js'][] = drupal_get_path('module', 'election_stv') . '/ballot-paper.min.js';
+  $form['#attached']['js'][] = drupal_get_path('module', 'election_stv') . '/ballot-paper.js';
   $form['#validate'][] = 'election_stv_vote_form_validate';
 }
 

@@ -13,7 +13,7 @@ class ElectionVoteAccessCandidatesTestCase extends ElectionWebTestCase {
     return array(
       'name' => 'Election Vote access - for enough candidates',
       'description' => 'Test access control for voting based on whether there are enough candidates to vote for.',
-      'group' => 'Election Vote',
+      'group' => 'Election',
     );
   }
 

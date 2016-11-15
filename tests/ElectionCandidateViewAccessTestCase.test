@@ -13,7 +13,7 @@ class ElectionCandidateViewAccessTestCase extends ElectionCandidateAccessTestCas
     return array(
       'name' => 'Election Candidate view access',
       'description' => 'Test access control for viewing candidates.',
-      'group' => 'Election Candidate',
+      'group' => 'Election',
     );
   }
 

@@ -13,7 +13,7 @@ class ElectionCandidateTokenTestCase extends ElectionWebTestCase {
     return array(
       'name' => 'Election Candidate tokens',
       'description' => 'Test candidate tokens.',
-      'group' => 'Election Candidate',
+      'group' => 'Election',
     );
   }
 

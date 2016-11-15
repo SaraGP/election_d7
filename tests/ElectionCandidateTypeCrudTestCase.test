@@ -13,7 +13,7 @@ class ElectionCandidateTypeCrudTestCase extends DrupalWebTestCase {
     return array(
       'name' => 'Election Candidate Type CRUD',
       'description' => 'A basic CRUD (Create, Read, Update, Delete) test for candidate types.',
-      'group' => 'Election Candidate',
+      'group' => 'Election',
     );
   }
 

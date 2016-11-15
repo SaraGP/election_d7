@@ -13,7 +13,7 @@ class ElectionPostCrudTestCase extends DrupalWebTestCase {
     return array(
       'name' => 'Election Post CRUD',
       'description' => 'A basic CRUD (Create, Read, Update, Delete) test for the Election Post module.',
-      'group' => 'Election Post',
+      'group' => 'Election',
     );
   }
 

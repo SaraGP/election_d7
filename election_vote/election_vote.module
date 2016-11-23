@@ -160,6 +160,11 @@ function election_vote_access($op, stdClass $post, $account = NULL, $only_open =
       $grants[$post->post_id][$account->uid][$op] = FALSE;
       return FALSE;
     }
+    // Undo will not work in 'extra secret mode' because in that case it is not
+    // possible to link votes to ballots.
+    if (!empty($post->election->settings['anonymize'])) {
+      return FALSE;
+    }
     // The user must have previously voted in order to undo a vote.
     if (!election_vote_check_account_previously_voted($post, $account)) {
       $grants[$post->post_id][$account->uid][$op] = FALSE;

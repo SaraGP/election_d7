@@ -44,7 +44,10 @@ function election_export_permission() {
  * Check whether an election type supports/allows exporting.
  */
 function election_export_check_support($election) {
-  return (!empty($election->type_info['export']) && election_candidate_check_support($election));
+  // 1. The election type supports export.
+  // 2. The election type supports candidates.
+  // 3. The election is not anonymized.
+  return (!empty($election->type_info['export']) && election_candidate_check_support($election) && empty($election->settings['anonymize']));
 }
 
 /**

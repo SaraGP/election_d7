@@ -209,9 +209,17 @@ function election_fptp_get_candidates_votes(stdClass $post) {
     ->condition('ec.cstatus', ELECTION_CANDIDATE_HOPEFUL, '>=')
     ->fields('ec', array('candidate_id'));
   $query->leftJoin('election_vote', 'ev', 'ev.candidate_id = ec.candidate_id');
-  $query->leftJoin('election_ballot', 'eb', 'eb.ballot_id = ev.ballot_id');
-  $query->addExpression('SUM(eb.value)', 'votes');
-  $query->orderBy('SUM(eb.value)', 'DESC');
+  // If anonymize not set, undo is possible, so we need to discard votes with value of zero.
+  if (empty($post->election->settings['anonymize'])) {
+    $query->leftJoin('election_ballot', 'eb', 'eb.ballot_id = ev.ballot_id');
+    $query->addExpression('SUM(eb.value)', 'votes');
+    $query->orderBy('SUM(eb.value)', 'DESC');
+  }
+  else {
+    $query->addExpression('COUNT(ev.candidate_id)', 'votes');
+    $query->orderBy('COUNT(ev.candidate_id)', 'DESC');
+  }
+
   $query->groupBy('ec.candidate_id');
   return $query->execute()->fetchAllKeyed();
 }

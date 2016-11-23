@@ -97,6 +97,14 @@ function election_form($form, &$form_state, stdClass $election) {
       ),
     ),
   );
+  if (!empty($election->type_info['may anonymize'])) {
+    $form['voting']['settings_anonymize'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Anonymize voting (extra secret mode)'),
+      '#description' => t('If enabled, votes will be completely anonymized in the database. The undo and export features will not be available.'),
+      '#default_value' => !empty($election->settings['anonymize']),
+    );
+  }
   $form['voting']['vschedule']['vopen_time'] = array(
     '#title' => t('Opening time'),
     '#type' => $date_widget,

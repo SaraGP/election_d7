@@ -13,6 +13,7 @@ function election_referendum_election_type_info() {
     'referendum' => array(
       'name' => t('referendum'),
       'description' => t('A simple referendum where people can vote in response to one or more questions.'),
+      'may anonymize' => TRUE,
       'post name' => t('question'),
       'vote form' => 'election_referendum_vote_form',
     ),

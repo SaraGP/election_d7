@@ -384,6 +384,11 @@ function election_vote_form_vote($form, &$form_state) {
       throw new Exception('The ballot record could not be saved.');
     }
 
+    // Now anonymize the ballot ID if in 'extra secret mode'.
+    if (!empty($post->election->settings['anonymize'])) {
+      $ballot_id = NULL;
+    }
+
     // Invoke hook_election_vote_ELECTION_TYPE_save().
     $hook = 'election_vote_' . $election->type . '_save';
     $vote_save = module_invoke_all($hook, $ballot_id, $post, $form, $form_state);

@@ -17,12 +17,6 @@ function election_vote_schema() {
   $schema['election_vote'] = array(
     'description' => 'The votes table for the election module.',
     'fields' => array(
-      'vote_id' => array(
-        'description' => 'Primary key: identifier for a vote.',
-        'type' => 'serial',
-        'unsigned' => TRUE,
-        'not null' => TRUE,
-      ),
       'election_id' => array(
         'description' => 'The election in which the vote was cast. Relates to {election}.election_id.',
         'type' => 'int',
@@ -66,7 +60,6 @@ function election_vote_schema() {
         'default' => 0,
       ),
     ),
-    'primary key' => array('vote_id'),
     'indexes' => array(
       'ballot_id' => array('ballot_id'),
       'election_id' => array('election_id'),
@@ -349,4 +342,12 @@ function election_vote_update_7108() {
     'type' => 'int',
     'not null' => TRUE,
   ), array('indexes' => array('timestamp' => array('timestamp'))));
+}
+
+/**
+ * Remove field election_vote.vote_id to improve anonymity.
+ */
+function election_vote_update_7109() {
+  db_drop_index('election_vote', 'vote_id');
+  db_drop_field('election_vote', 'vote_id');
 }

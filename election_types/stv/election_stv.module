@@ -310,7 +310,7 @@ function election_stv_election_vote_stv_save($ballot_id, $post, $vote_form, $vot
       ->fields($vote_entry)
       ->execute();
 
-    if (!$insert_id) {
+    if ($insert_id === NULL) {
       return FALSE;
     }
 
@@ -406,7 +406,7 @@ function election_stv_preprocess_election_statistics(&$variables) {
       ->condition('eb.value', 0, '>')
       ->condition('eb.abstain', 0);
     $query->join('election_vote', 'ev', 'ev.ballot_id = eb.ballot_id');
-    $query->addExpression('COUNT(DISTINCT ev.vote_id)');
+    $query->addExpression('COUNT(*)');
     $totals['rankings'] = $query->execute()->fetchField();
     $variables['content']['election_table']['#header']['rankings'] = t('Rankings (STV)');
     $variables['content']['election_table']['#rows'][0]['rankings'] = t('@rankings (@avg per ballot)', array(

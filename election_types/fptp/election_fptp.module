@@ -163,7 +163,7 @@ function election_fptp_election_vote_fptp_save($ballot_id, $post, $vote_form, $v
   }
   $success = $query->execute();
 
-  return (bool) $success;
+  return $success !== NULL;
 }
 
 /**

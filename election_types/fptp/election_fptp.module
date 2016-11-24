@@ -161,8 +161,9 @@ function election_fptp_election_vote_fptp_save($ballot_id, $post, $vote_form, $v
     $vote_entry['candidate_id'] = $cid;
     $query->values($vote_entry);
   }
+  $success = $query->execute();
 
-  return (bool) $query->execute();
+  return (bool) $success;
 }
 
 /**

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Rules integration file for the Election Vote module.

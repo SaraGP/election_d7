@@ -1,9 +1,9 @@
 <?php
+
 /**
  * @file
  * Filter posts by voting status = open.
  */
-
 class election_post_views_handler_filter_vstatus extends views_handler_filter_boolean_operator {
 
   /**

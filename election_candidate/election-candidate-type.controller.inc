@@ -1,9 +1,9 @@
 <?php
+
 /**
  * @file
  * The controller for election candidate type entities.
  */
-
 class ElectionCandidateTypeController extends EntityAPIControllerExportable {
 
   /**

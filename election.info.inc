@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Entity property information for the Election module.

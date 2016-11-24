@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Default entity controller for the Election module.
@@ -8,7 +9,6 @@
  * @extends
  * EntityAPIControllerExportable
  */
-
 class ElectionDefaultController extends EntityAPIController {
 
   /**

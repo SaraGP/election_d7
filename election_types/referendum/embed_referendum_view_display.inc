@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Referendum-specific alterations to the 'election_posts' default View.

@@ -1,9 +1,9 @@
 <?php
+
 /**
  * @file
  * Views handler to filter elections by 'published' status.
  */
-
 class election_views_handler_filter_published extends views_handler_filter {
 
   public function admin_summary() {

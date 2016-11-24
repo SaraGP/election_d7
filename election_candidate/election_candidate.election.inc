@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Election hooks for the Election Candidate module.

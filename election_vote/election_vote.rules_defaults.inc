@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Default Rules for the Election Vote module.

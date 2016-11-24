@@ -1,9 +1,9 @@
 <?php
+
 /**
  * @file
  * Field handler to present a link to the candidate's profile page.
  */
-
 class election_candidate_views_handler_field_link extends views_handler_field {
 
   /**

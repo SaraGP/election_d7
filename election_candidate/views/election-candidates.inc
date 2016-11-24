@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * View listing candidates standing in an election, per election or per post.

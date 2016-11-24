@@ -1,9 +1,9 @@
 <?php
+
 /**
  * @file
  * Views field handler for displaying the user's vote eligibility as a Boolean.
  */
-
 class election_vote_views_handler_field_eligibility_boolean extends views_handler_field_boolean {
 
   /**

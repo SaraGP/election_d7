@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Menu callbacks for the Election module.

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Entity controller for the 'election' entity in the Election module.
@@ -8,7 +9,6 @@
  * @extends
  * ElectionDefaultController
  */
-
 class ElectionController extends ElectionDefaultController {
 
   /**

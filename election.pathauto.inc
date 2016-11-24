@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Pathauto hooks for the Election module.

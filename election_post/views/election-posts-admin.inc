@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * View listing posts in an election, for administrative use.

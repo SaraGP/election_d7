@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Candidate type editing UI.

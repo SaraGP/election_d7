@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Form functions for the Election Export module.

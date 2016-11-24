@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * View listing candidates in an election, for administrative use.

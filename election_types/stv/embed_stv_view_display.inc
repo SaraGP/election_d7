@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * STV-specific alterations to the 'election_posts' default View.

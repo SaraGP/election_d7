@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Features integration for the Election Candidate module.

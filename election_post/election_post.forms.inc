@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Form functions for the Election Post module.
@@ -159,7 +160,6 @@ function election_post_form_delete_submit($form, &$form_state) {
     array('query' => $destination),
   );
 }
-
 
 /**
  * Form validate function for the form election_post_form.

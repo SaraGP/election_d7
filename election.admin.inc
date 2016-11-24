@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Administration page callbacks for the Election module.

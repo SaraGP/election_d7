@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * View listing all elections.

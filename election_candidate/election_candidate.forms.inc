@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Form functions for the Election Candidate module.
@@ -295,7 +296,6 @@ function election_candidate_nomination_form($form, &$form_state, stdClass $post)
 
   return $form;
 }
-
 
 /**
  * Validation function for both the candidate edit form and the nomination form.

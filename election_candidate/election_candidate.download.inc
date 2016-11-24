@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Download-related functions for the Election Candidate module.

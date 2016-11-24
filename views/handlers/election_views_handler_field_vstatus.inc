@@ -1,9 +1,9 @@
 <?php
+
 /**
  * @file
  * Handler for the election voting status (vstatus) field.
  */
-
 class election_views_handler_field_vstatus extends views_handler_field {
 
   /**

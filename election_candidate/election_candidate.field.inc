@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Field integration for the Election Candidate module.

@@ -1,9 +1,9 @@
 <?php
+
 /**
  * @file
  * Field handler to present a link to edit an election.
  */
-
 class election_views_handler_field_link_edit extends election_views_handler_field_link {
   /**
    * Overrides parent::construct().

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Constants for the Election Candidate module.

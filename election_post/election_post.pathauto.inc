@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Pathauto hooks for the Election Post module.
@@ -68,7 +69,6 @@ function election_post_pathauto_bulk_update_batch_process(&$context) {
     $context['finished'] = $context['sandbox']['count'] / $context['sandbox']['total'];
   }
 }
-
 
 /**
  * Implements hook_path_alias_types().

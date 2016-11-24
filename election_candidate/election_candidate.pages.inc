@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Page callbacks and form functions for election candidates and nominations

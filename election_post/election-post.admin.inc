@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Administration page callbacks for the Election Post module.
@@ -76,7 +77,6 @@ function election_post_page_add($election) {
   return drupal_get_form('election_post_form', $post, $election);
 
 }
-
 
 /**
  * Page callback for cloning an election post.

@@ -1,9 +1,9 @@
 <?php
+
 /**
  * @file
  * Field handler to present a link to edit the post.
  */
-
 class election_post_views_handler_field_link_edit extends election_post_views_handler_field_link {
 
   /**

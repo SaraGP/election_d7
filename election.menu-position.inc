@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Provides the Election rule plugin for the Menu Position module.

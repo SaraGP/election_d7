@@ -1,9 +1,9 @@
 <?php
+
 /**
  * @file
  * Field handler to present a link to the post's main page.
  */
-
 class election_post_views_handler_field_link extends views_handler_field {
 
   /**

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Election Vote: primary module file.
@@ -498,7 +499,6 @@ function election_vote_field_extra_fields_alter(&$info) {
     );
   }
 }
-
 
 /**
  * Implements hook_ip_anon_alter().

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Entity controller for posts (in the Election module).
@@ -8,7 +9,6 @@
  * @extends
  * DrupalDefaultEntityController
  */
-
 class ElectionPostController extends ElectionDefaultController {
 
   /**

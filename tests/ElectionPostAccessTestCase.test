@@ -11,6 +11,7 @@ class ElectionPostAccessTestCase extends ElectionWebTestCase {
    */
   public function setUp() {
     $modules = array(
+      'election_fptp',
       'election_referendum',
       'election_stv',
     );

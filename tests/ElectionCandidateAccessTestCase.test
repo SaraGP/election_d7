@@ -11,6 +11,7 @@ class ElectionCandidateAccessTestCase extends ElectionWebTestCase {
    */
   public function setUp() {
     $modules = array(
+      'election_fptp',
       'election_stv',
     );
     parent::setUp($modules);

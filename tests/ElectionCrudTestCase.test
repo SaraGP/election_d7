@@ -58,6 +58,27 @@ class ElectionCrudTestCase extends DrupalWebTestCase {
         'title' => $this->randomString(),
         'published' => 1,
       ));
+
+      // Test message displayed when scheduled dates are in the past.
+      // Nominations dates.
+      if (!empty($election->type_info['has candidates'])) {
+        $election = $this->helperElectionUpdateUi($election, array(
+          'nstatus' => 0,
+          'nopen_time[date]' => time() - 4000,
+          'nclose_time[date]' => time() - 3000,
+        ));
+        $this->assertText('Nominations schedule Opening time is in the past.');
+        $this->assertText('Nominations schedule Closing time is in the past.');
+      }
+      // Voting dates.
+      $election = $this->helperElectionUpdateUi($election, array(
+        'vstatus' => 0,
+        'vopen_time[date]' => time() - 2000,
+        'vclose_time[date]' => time() - 1000,
+      ));
+      $this->assertText('Voting schedule Opening time is in the past.');
+      $this->assertText('Voting schedule Closing time is in the past.');
+
       // Delete the election.
       $this->helperElectionDeleteUi($election);
     }
@@ -96,6 +117,12 @@ class ElectionCrudTestCase extends DrupalWebTestCase {
    * Test updating an existing election via the UI.
    */
   protected function helperElectionUpdateUi(stdClass $election, array $edit) {
+    $date_format = variable_get('date_format_short', 'Y-m-d H:i');
+    foreach ($edit as $key => $value) {
+      if (preg_match('/\[date\]$/', $key)) {
+        $edit[$key] = date($date_format, $value);
+      }
+    }
     $this->drupalPost(election_uri_path($election) . '/edit', $edit, t('Save'));
     // The page should display that the election was saved.
     // The (possibly updated) title is needed to test this assertion.
@@ -112,7 +139,14 @@ class ElectionCrudTestCase extends DrupalWebTestCase {
     $election = election_load($original->election_id, TRUE);
     // Check that the new election has the correct properties.
     foreach ($edit as $name => $value) {
-      $this->assertEqual($election->$name, $value, t('Updated election property %name is correct.', array('%name' => $name)));
+      if (preg_match('/^(.+)\[date\]$/', $name, $backref)) {
+        $name = $backref[1];
+        $election_value = date($date_format, $election->$name);
+      }
+      else {
+        $election_value = $election->$name;
+      }
+      $this->assertEqual($election_value, $value, t('Updated election property %name is correct.', array('%name' => $name)));
     }
     return $election;
   }

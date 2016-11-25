@@ -209,6 +209,23 @@ function election_form_validate($form, &$form_state) {
     }
   }
 
+  // For dates that have changed, display a warning for dates in the past.
+  foreach (array('n' => 'nominations', 'v' => 'voting') as $key => $value) {
+    foreach (array('open', 'close') as $open_close) {
+      if (isset($form_state['values'][$key . $open_close . '_time'])) {
+        $time_old = strtotime($form[$value][$key . 'schedule'][$key . $open_close . '_time']['#default_value']);
+        $time_new = strtotime($form_state['values'][$key . $open_close . '_time']);
+        if ($time_old !== $time_new && $time_new < time()) {
+          $message = t('@what @which is in the past.', array(
+            '@what' => $form[$value][$key . 'schedule']['#title'],
+            '@which' => $form[$value][$key . 'schedule'][$key . $open_close . '_time']['#title'],
+          ));
+          drupal_set_message($message, 'warning');
+        }
+      }
+    }
+  }
+
   // Check other Fields.
   field_attach_form_validate('election', $form_state['election'], $form, $form_state);
 

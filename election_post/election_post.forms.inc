@@ -20,7 +20,7 @@
  * @return array
  *   Form API render array.
  */
-function election_post_form($form, &$form_state, stdClass $post, $election = NULL) {
+function election_post_form(array $form, array &$form_state, stdClass $post, $election = NULL) {
 
   if (empty($election)) {
     $election = election_load($post->election_id);

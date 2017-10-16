@@ -15,7 +15,7 @@
  * @return bool
  *   TRUE if condition applies successfully. Otherwise FALSE.
  */
-function election_menu_position_condition_election($variables) {
+function election_menu_position_condition_election(array $variables) {
   $args = arg();
   if ($args[0] == 'election' && !empty($args[1]) && is_numeric($args[1])) {
     $election = election_load($args[1]);
@@ -36,7 +36,7 @@ function election_menu_position_condition_election($variables) {
  * @param array $form_state
  *   A reference to the current form state.
  */
-function election_menu_position_rule_election_form(&$form, &$form_state) {
+function election_menu_position_rule_election_form(array &$form, array &$form_state) {
   $variables = array();
 
   $form['conditions']['election'] = array(
@@ -73,7 +73,7 @@ function election_menu_position_rule_election_form(&$form, &$form_state) {
  * @param array $form_state
  *   A reference to the current form state, including submitted values.
  */
-function election_menu_position_rule_election_form_submit(&$form, &$form_state) {
+function election_menu_position_rule_election_form_submit(array &$form, array &$form_state) {
   // The user has added our plugin's form elements as a condition for the rule.
   if (!empty($form_state['values']['election_type'])) {
     // Remove any 0 valued options.

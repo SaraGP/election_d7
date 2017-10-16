@@ -32,7 +32,7 @@ function election_candidate_pathauto($op) {
  *
  * @see election_candidate_pathauto()
  */
-function election_candidate_pathauto_bulk_update_batch_process(&$context) {
+function election_candidate_pathauto_bulk_update_batch_process(array &$context) {
   if (!isset($context['sandbox']['current'])) {
     $context['sandbox']['count'] = 0;
     $context['sandbox']['current'] = 0;

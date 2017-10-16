@@ -191,7 +191,7 @@ function election_condition_entity_delete($entity, $type) {
  *
  * @return bool
  */
-function election_condition_test($condition, $post, $account) {
+function election_condition_test(array $condition, $post, $account) {
   if (!empty($condition['file'])) {
     include_once $condition['file'];
   }

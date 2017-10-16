@@ -37,7 +37,7 @@ function election_post_pathauto($op) {
  *
  * @see election_post_pathauto()
  */
-function election_post_pathauto_bulk_update_batch_process(&$context) {
+function election_post_pathauto_bulk_update_batch_process(array &$context) {
   if (!isset($context['sandbox']['current'])) {
     $context['sandbox']['count'] = 0;
     $context['sandbox']['current'] = 0;

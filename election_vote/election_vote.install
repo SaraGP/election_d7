@@ -44,7 +44,7 @@ function election_vote_schema() {
         'size' => 'tiny',
       ),
       'candidate_id' => array(
-        'description' => 'For ranked elections: the candidate being ranked. NULL means it is not a ranked election.',
+        'description' => 'For elections: The candidate being ranked. NULL means it is not an election.',
         'type' => 'int',
         'unsigned' => TRUE,
       ),

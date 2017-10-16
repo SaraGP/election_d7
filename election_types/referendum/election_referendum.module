@@ -155,7 +155,7 @@ function election_referendum_count_votes_by_answer($post, $answer) {
     $query->addExpression('SUM(eb.value)');
   }
   else {
-    $query->addExpression('COUNT(ev.candidate_id)');
+    $query->addExpression('COUNT(*)');
   }
   return $query->execute()->fetchField();
 }

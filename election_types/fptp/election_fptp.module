@@ -216,6 +216,8 @@ function election_fptp_get_candidates_votes(stdClass $post) {
     $query->orderBy('SUM(eb.value)', 'DESC');
   }
   else {
+    // Column ev.candidate_id will be NULL in leftJoin if there are no votes for
+    // this candidate.
     $query->addExpression('COUNT(ev.candidate_id)', 'votes');
     $query->orderBy('COUNT(ev.candidate_id)', 'DESC');
   }

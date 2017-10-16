@@ -2,9 +2,14 @@
 
 /**
  * @file
+ * Class election_views_handler_field_link_edit.
+ */
+
+/**
  * Field handler to present a link to edit an election.
  */
 class election_views_handler_field_link_edit extends election_views_handler_field_link {
+
   /**
    * Overrides parent::construct().
    */
@@ -34,4 +39,5 @@ class election_views_handler_field_link_edit extends election_views_handler_fiel
     $text = !empty($this->options['text']) ? $this->options['text'] : t('Edit');
     return $text;
   }
+
 }

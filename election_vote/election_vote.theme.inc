@@ -97,10 +97,10 @@ function template_preprocess_election_vote_eligibility(&$variables) {
     // Access denied. If the user is not logged in, provide a link.
     if ($account_is_user && !user_is_logged_in()) {
       $eligibility = t('<a href="@login_uri" class="election-vote-link-login">Log in</a> to vote.', array(
-          '@login_uri' => url(
-            'user/login',
-            array('query' => array('destination' => $_GET['q']))
-          ),
+        '@login_uri' => url(
+          'user/login',
+          array('query' => array('destination' => $_GET['q']))
+        ),
       ));
     }
     // The account is not eligible.

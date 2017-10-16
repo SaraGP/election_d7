@@ -140,7 +140,7 @@ function theme_election_status($variables) {
  *
  * The $variables['elements'] array contains the following arguments:
  * - #election
- * - #view_mode
+ * - #view_mode.
  *
  * @see election.tpl.php
  */

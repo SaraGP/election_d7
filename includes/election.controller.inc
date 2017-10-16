@@ -2,12 +2,11 @@
 
 /**
  * @file
+ * Class ElectionController.
+ */
+
+/**
  * Entity controller for the 'election' entity in the Election module.
- *
- * @class
- * ElectionController
- * @extends
- * ElectionDefaultController
  */
 class ElectionController extends ElectionDefaultController {
 

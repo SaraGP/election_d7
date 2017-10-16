@@ -435,10 +435,10 @@ function election_post_delete_multiple(array $post_ids) {
 /**
  * Wrapper function to allow deleting an individual election post.
  *
- * @see election_post_delete_multiple()
- *
  * @param mixed $post_id
  *   Single post ID.
+ *
+ * @see election_post_delete_multiple()
  */
 function election_post_delete($post_id) {
   return election_post_delete_multiple(array($post_id));

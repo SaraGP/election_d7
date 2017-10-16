@@ -2,8 +2,7 @@
 
 /**
  * @file
- * Administrative page callbacks for election candidates and nominations
- * (Election module).
+ * Administrative page callbacks for election candidates and nominations.
  */
 
 /**

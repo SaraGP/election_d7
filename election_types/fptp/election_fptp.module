@@ -27,9 +27,9 @@ function election_fptp_vote_form(&$form, &$form_state) {
     '#type' => 'item',
     '#title' => drupal_ucfirst(election_get_post_name($election->type)),
     '#markup' => t('@title (!view details)', array(
-        '@title' => $post->title,
-        '!view details' => l(t('view details'), election_post_uri_path($post)),
-      )),
+      '@title' => $post->title,
+      '!view details' => l(t('view details'), election_post_uri_path($post)),
+    )),
   );
 
   $form['ballot_paper'] = array(

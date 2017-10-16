@@ -2,6 +2,10 @@
 
 /**
  * @file
+ * Class election_candidate_views_handler_field_link_edit.
+ */
+
+/**
  * Field handler to present a link to edit the candidate.
  */
 class election_candidate_views_handler_field_link_edit extends election_candidate_views_handler_field_link {

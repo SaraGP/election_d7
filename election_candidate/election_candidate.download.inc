@@ -222,7 +222,6 @@ function _election_candidate_download_format_property(stdClass $candidate, $prop
 
     case 'email':
       return is_array($value) && isset($value[LANGUAGE_NONE][0]) ? $value[LANGUAGE_NONE][0]['email'] : NULL;
-      break;
 
     default:
       $values = field_get_items('election_candidate', $candidate, $property_key);

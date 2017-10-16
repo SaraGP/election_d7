@@ -2,12 +2,11 @@
 
 /**
  * @file
+ * Class ElectionDefaultController.
+ */
+
+/**
  * Default entity controller for the Election module.
- *
- * @class
- * ElectionDefaultController
- * @extends
- * EntityAPIControllerExportable
  */
 class ElectionDefaultController extends EntityAPIController {
 

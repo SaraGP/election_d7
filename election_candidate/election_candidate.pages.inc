@@ -2,13 +2,12 @@
 
 /**
  * @file
- * Page callbacks and form functions for election candidates and nominations
- * (Election module).
+ * Page callbacks and form functions for election candidates and nominations.
  */
 
- /**
-  * Page callback for election-post/%election_post/nomination-form.
-  */
+/**
+ * Page callback for election-post/%election_post/nomination-form.
+ */
 function election_candidate_nomination_form_page(stdClass $post) {
   drupal_set_title(t('Nomination form: %post', array(
     '%post' => truncate_utf8($post->title, 50, TRUE, TRUE, 30),

@@ -2,6 +2,7 @@
  * @file
  * JavaScript for the ballot paper form in the election_stv module.
  */
+
 (function ($) {
 
   Drupal.behaviors.election_vote = {

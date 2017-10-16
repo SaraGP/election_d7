@@ -2,6 +2,8 @@
 
 /**
  * @file
+ * API documentation file.
+ *
  * This file contains no working PHP code; it exists to provide additional
  * documentation for doxygen as well as to document hooks in the standard
  * Drupal manner.
@@ -10,8 +12,6 @@
 /**
  * Act before voting access is granted for a user.
  *
- * @see election_condition.election.inc
- *
  * @param object $post
  *   An election post object.
  * @param object $account
@@ -19,6 +19,8 @@
  *
  * @return mixed
  *   Return FALSE to deny voting access. Other return values have no effect.
+ *
+ * @see election_condition.election.inc
  */
 function hook_election_vote_before_grant($post, $account) {
   // Deny access to the user with the UID 37491.
@@ -35,7 +37,7 @@ function hook_election_vote_before_grant($post, $account) {
  * item 'election-post/%election_post/explain' if they have the permission
  * 'view voting access explanation'.
  *
- * @param array &$limitations
+ * @param array $limitations
  *   An array of limitations on voting access, provided by default mechanisms
  *   (such as role limitations), by other modules, or by Rules.
  * @param object $post
@@ -43,7 +45,7 @@ function hook_election_vote_before_grant($post, $account) {
  * @param object $account
  *   A Drupal user account object.
  */
-function hook_election_vote_access_explain_alter(&$limitations, $post, $account) {
+function hook_election_vote_access_explain_alter(array &$limitations, $post, $account) {
   $limitations['module_my_module']['explanation'] = t("You can't be user 37491.");
 }
 
@@ -67,7 +69,7 @@ function hook_election_vote_access_explain_alter(&$limitations, $post, $account)
  *   Return TRUE on success, or FALSE on failure. Votes and ballots are not
  *   saved unless this implementation returns TRUE.
  */
-function hook_election_vote_ELECTION_TYPE_save($ballot_id, $post, $vote_form, $vote_form_state) {
+function hook_election_vote_ELECTION_TYPE_save($ballot_id, $post, array $vote_form, array $vote_form_state) {
   // Get the answer out of the form.
   $answer = $vote_form_state['values']['answer'];
 
@@ -87,7 +89,7 @@ function hook_election_vote_ELECTION_TYPE_save($ballot_id, $post, $vote_form, $v
 /**
  * Alter the value of a ballot before it is saved.
  *
- * @param int &$value
+ * @param int $value
  *   The value of the ballot, normally 1.
  * @param object $election
  *   The election entity.

@@ -2,6 +2,10 @@
 
 /**
  * @file
+ * Class ElectionCandidateViewAccessTestCase.
+ */
+
+/**
  * Test Election Candidate access control for viewing candidates.
  */
 class ElectionCandidateViewAccessTestCase extends ElectionCandidateAccessTestCase {
@@ -70,4 +74,3 @@ class ElectionCandidateViewAccessTestCase extends ElectionCandidateAccessTestCas
   }
 
 }
-

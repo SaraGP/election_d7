@@ -2,6 +2,10 @@
 
 /**
  * @file
+ * Class ElectionCandidateTokenTestCase.
+ */
+
+/**
  * Test the Election Candidate module's tokens.
  */
 class ElectionCandidateTokenTestCase extends ElectionWebTestCase {

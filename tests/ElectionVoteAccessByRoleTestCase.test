@@ -2,6 +2,10 @@
 
 /**
  * @file
+ * Class ElectionVoteAccessByRoleTestCase.
+ */
+
+/**
  * Test the Election Vote module for access control by role.
  */
 class ElectionVoteAccessByRoleTestCase extends ElectionWebTestCase {

@@ -543,8 +543,6 @@ function election_vote_page_explain($post) {
  * others, for example where the voters themselves are each representing groups
  * of greater or fewer people.
  *
- * @see hook_election_vote_ballot_value_alter()
- *
  * @param object $election
  *   The election entity.
  * @param object $post
@@ -553,6 +551,9 @@ function election_vote_page_explain($post) {
  *   The user who is voting.
  *
  * @return int
+ *   The value of the ballot.
+ *
+ * @see hook_election_vote_ballot_value_alter()
  */
 function election_vote_get_ballot_value($election, $post, $account) {
   $value = 1;

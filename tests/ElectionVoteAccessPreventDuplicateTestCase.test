@@ -2,6 +2,10 @@
 
 /**
  * @file
+ * Class ElectionVoteAccessPreventDuplicateTestCase.
+ */
+
+/**
  * Test the Election Vote module for restricting each user to a single vote.
  */
 class ElectionVoteAccessPreventDuplicateTestCase extends ElectionWebTestCase {
@@ -102,4 +106,5 @@ class ElectionVoteAccessPreventDuplicateTestCase extends ElectionWebTestCase {
       $this->drupalLogout();
     }
   }
+
 }

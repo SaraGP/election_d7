@@ -507,10 +507,10 @@ function election_delete_multiple(array $election_ids) {
 /**
  * Wrapper function to allow deleting an individual election.
  *
- * @see election_delete_multiple()
- *
  * @param mixed $election_id
  *   Single election ID.
+ *
+ * @see election_delete_multiple()
  */
 function election_delete($election_id) {
   return election_delete_multiple(array($election_id));

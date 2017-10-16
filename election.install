@@ -150,7 +150,7 @@ function election_update_7101() {
     ->fields(array('published' => 1))
     ->execute();
 
-  // Rename 'view any election' permission to 'view published elections'
+  // Rename 'view any election' permission to 'view published elections'.
   db_update('role_permission')
     ->fields(array('permission' => 'view published elections'))
     ->condition('permission', 'view any election')

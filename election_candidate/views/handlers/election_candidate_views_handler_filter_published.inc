@@ -2,14 +2,24 @@
 
 /**
  * @file
+ * Class election_candidate_views_handler_filter_published.
+ */
+
+/**
  * Views handler to filter election candidates by 'published' status.
  */
 class election_candidate_views_handler_filter_published extends views_handler_filter {
 
+  /**
+   *
+   */
   public function admin_summary() {
     return;
   }
 
+  /**
+   *
+   */
   public function operator_form(&$form, &$form_state) {
     return;
   }
@@ -23,6 +33,9 @@ class election_candidate_views_handler_filter_published extends views_handler_fi
     return FALSE;
   }
 
+  /**
+   *
+   */
   public function query() {
     // Join to the election table: candidates should not be displayed if the
     // election is not published.
@@ -37,4 +50,5 @@ class election_candidate_views_handler_filter_published extends views_handler_fi
     $post_table = $this->query->add_relationship('election_post', $join, $this->table_alias, $this->relationship);
     $this->query->add_where_expression($this->options['group'], "($candidate_table.published = 1 AND $post_table.published = 1 AND $election_table.published = 1) OR ($election_table.uid = ***CURRENT_USER*** AND ***CURRENT_USER*** <> 0) OR ***EDIT_ANY_ELECTION*** = 1");
   }
+
 }

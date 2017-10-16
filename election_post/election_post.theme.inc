@@ -11,7 +11,7 @@
  * The $variables array contains the following arguments:
  * - $election
  * - $view_mode
- * - $page
+ * - $page.
  *
  * @see election-post.tpl.php
  */

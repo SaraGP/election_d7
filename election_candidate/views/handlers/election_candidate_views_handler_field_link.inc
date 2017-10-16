@@ -2,6 +2,10 @@
 
 /**
  * @file
+ * Class election_candidate_views_handler_field_link.
+ */
+
+/**
  * Field handler to present a link to the candidate's profile page.
  */
 class election_candidate_views_handler_field_link extends views_handler_field {
@@ -62,4 +66,5 @@ class election_candidate_views_handler_field_link extends views_handler_field {
     $text = !empty($this->options['text']) ? $this->options['text'] : t('view profile');
     return $text;
   }
+
 }

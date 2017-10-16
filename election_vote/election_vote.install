@@ -10,7 +10,7 @@
  */
 function election_vote_schema() {
   // Needed during uninstall when the election module is disabled.
-  require_once(__DIR__ . '/../includes/election.constants.inc');
+  require_once __DIR__ . '/../includes/election.constants.inc';
 
   $schema = array();
 
@@ -244,12 +244,12 @@ function election_vote_update_7003() {
     $query->distinct();
     $ballot_ids = $query->execute()->fetchCol();
     if (!empty($ballot_ids)) {
-        db_update('election_ballot')
-            ->fields(array('abstain' => 1))
-            ->condition('ballot_id', $ballot_ids, 'IN')
-            ->execute();
-        db_delete('election_vote')
-            ->condition('abstain', 1);
+      db_update('election_ballot')
+        ->fields(array('abstain' => 1))
+        ->condition('ballot_id', $ballot_ids, 'IN')
+        ->execute();
+      db_delete('election_vote')
+        ->condition('abstain', 1);
     }
   }
 }
@@ -298,7 +298,6 @@ function election_vote_update_7107() {
     'unsigned' => TRUE,
     'not null' => TRUE,
   ), array('indexes' => array('post_id' => array('post_id'))));
-
 
   db_drop_index('election_ballot', 'election_id');
   db_change_field('election_ballot', 'election_id', 'election_id', array(

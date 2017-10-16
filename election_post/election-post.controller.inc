@@ -2,12 +2,11 @@
 
 /**
  * @file
+ * Class ElectionPostController.
+ */
+
+/**
  * Entity controller for posts (in the Election module).
- *
- * @class
- * ElectionPostController
- * @extends
- * DrupalDefaultEntityController
  */
 class ElectionPostController extends ElectionDefaultController {
 

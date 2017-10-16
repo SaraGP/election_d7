@@ -2,6 +2,10 @@
 
 /**
  * @file
+ * Class election_vote_views_handler_field_vote_link.
+ */
+
+/**
  * Field handler to present a link to an election_post's voting form.
  */
 class election_vote_views_handler_field_vote_link extends election_post_views_handler_field_link {

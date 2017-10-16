@@ -10,7 +10,7 @@
  *
  * @param array $form
  *   The Drupal Form API form definition.
- * @param array &$form_state
+ * @param array $form_state
  *   The form state array.
  * @param object $post
  *   An election post object.

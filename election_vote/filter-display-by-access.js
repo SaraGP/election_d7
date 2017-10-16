@@ -1,8 +1,11 @@
 /**
  * @file
- * JavaScript to allow the user to toggle the display of election posts, by
- * whether they are 'votable' (i.e. the user has access to vote).
+ * JavaScript to allow the user to adjust display of election posts.
+ *
+ * Toggle the display of election posts by whether they are 'votable' (i.e. the
+ * user has access to vote).
  */
+
 (function ($, Drupal) {
 
   Drupal.behaviors.election_vote_filter_posts = {

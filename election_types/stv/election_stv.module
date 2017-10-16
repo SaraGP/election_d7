@@ -243,7 +243,8 @@ function election_stv_vote_form_validate($form, &$form_state) {
   // Force the ranks to be consecutive.
   $original_rankings = $candidate_rankings;
   $consecutive_rank = 0;
-  $rank_changes = array(); // Keep a log of changes for later.
+  // Keep a log of changes for later.
+  $rank_changes = array();
   $previous_rank = NULL;
   foreach ($candidate_rankings as $candidate_id => &$rank) {
     // Allow for 'No preference'.

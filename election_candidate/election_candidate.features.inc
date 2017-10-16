@@ -97,7 +97,7 @@ function election_candidate_type_features_export_render($module, $data, $export 
 function election_candidate_type_features_revert($module = NULL) {
   if ($default_types = features_get_default('election_candidate_type', $module)) {
     foreach ($default_types as $type_name => $type_info) {
-      // Delete candidate types
+      // Delete candidate types.
       db_delete('election_candidate_type')
         ->condition('type', $type_name)
         ->execute();

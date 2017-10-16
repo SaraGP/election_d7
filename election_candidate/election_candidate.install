@@ -211,7 +211,7 @@ function election_candidate_uninstall() {
   }
 }
 
-  /**
+/**
  * Copy field instances from old single bundle to new per-election bundles.
  */
 function election_candidate_update_7001() {

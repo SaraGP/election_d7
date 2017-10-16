@@ -177,8 +177,6 @@ function election_statistics_get_totals(stdClass $election, $reset = FALSE) {
 /**
  * Get the total numbers of ballots & votes for election posts.
  *
- * @see election_statistics_get_totals()
- *
  * @param object $election
  *   The election entity.
  * @param bool $reset
@@ -187,6 +185,8 @@ function election_statistics_get_totals(stdClass $election, $reset = FALSE) {
  * @return array
  *   An associative array of post statistics, keyed by post ID, containing the
  *   properties listed in election_statistics_get_totals().
+ *
+ * @see election_statistics_get_totals()
  */
 function election_statistics_get_post_totals(stdClass $election, $reset = FALSE) {
   $cache_key = 'election_statistics:' . $election->election_id . ':posts';
@@ -260,11 +260,11 @@ function election_statistics_get_top_count(stdClass $election, $group_by, $limit
  */
 function _election_statistics_get_posts($election) {
   $post_ids = db_select('election_post', 'ep')
-      ->fields('ep', array('post_id'))
-      ->condition('election_id', $election->election_id)
-      ->orderBy('title')
-      ->execute()
-      ->fetchCol();
+    ->fields('ep', array('post_id'))
+    ->condition('election_id', $election->election_id)
+    ->orderBy('title')
+    ->execute()
+    ->fetchCol();
   $posts = election_post_load_multiple($post_ids);
   return $posts;
 }

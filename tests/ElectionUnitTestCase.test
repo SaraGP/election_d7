@@ -2,6 +2,10 @@
 
 /**
  * @file
+ * Class ElectionUnitTestCase.
+ */
+
+/**
  * Unit tests for the basic functionality of Election.
  */
 class ElectionUnitTestCase extends DrupalUnitTestCase {

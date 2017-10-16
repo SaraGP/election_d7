@@ -2,6 +2,10 @@
 
 /**
  * @file
+ * Class election_post_views_handler_argument_post_id.
+ */
+
+/**
  * Provide election post ID argument handler.
  *
  * Argument handler to accept a post ID.

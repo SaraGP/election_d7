@@ -4,7 +4,6 @@
  * @file
  * Default theme implementation to display an election candidate.
  */
-
 ?>
 <div id="election-<?php print $election->election_id; ?>-candidate-<?php print $candidate->candidate_id; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
 

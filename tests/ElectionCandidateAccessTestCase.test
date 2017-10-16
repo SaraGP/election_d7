@@ -2,6 +2,10 @@
 
 /**
  * @file
+ * Class ElectionCandidateAccessTestCase.
+ */
+
+/**
  * Test the Election Candidate module for access control.
  */
 class ElectionCandidateAccessTestCase extends ElectionWebTestCase {

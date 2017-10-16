@@ -32,10 +32,10 @@ function election_post_pathauto($op) {
 /**
  * Allow bulk updating of paths. See the Pathauto module.
  *
- * @see election_post_pathauto()
- *
- * @param array &$context
+ * @param array $context
  *   The Batch API context array.
+ *
+ * @see election_post_pathauto()
  */
 function election_post_pathauto_bulk_update_batch_process(&$context) {
   if (!isset($context['sandbox']['current'])) {

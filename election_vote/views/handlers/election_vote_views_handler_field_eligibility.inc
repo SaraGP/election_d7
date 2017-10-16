@@ -2,6 +2,10 @@
 
 /**
  * @file
+ * Class election_vote_views_handler_field_eligibility.
+ */
+
+/**
  * Views field handler for displaying the current user's eligibility to vote.
  */
 class election_vote_views_handler_field_eligibility extends views_handler_field {

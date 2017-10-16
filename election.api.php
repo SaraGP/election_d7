@@ -2,6 +2,8 @@
 
 /**
  * @file
+ * API documentation file.
+ *
  * This file contains no working PHP code; it exists to provide additional
  * documentation for doxygen as well as to document hooks in the standard
  * Drupal manner.
@@ -37,8 +39,8 @@
  *     is provided as a more convenient alternative to hook_form_FORM_ID_alter()
  *     to avoid complications with confirm form logic.
  *     The function takes the parameters:
- *         array &$form        - The form array from election_vote_form().
- *         array &$form_state  - The form_state array from election_vote_form().
+ *         array $form        - The form array from election_vote_form().
+ *         array $form_state  - The form_state array from election_vote_form().
  *   - export: Whether the election results can be exported as an archive of
  *     ballot (.blt) files. This needs the election_export submodule.
  *
@@ -60,7 +62,7 @@ function hook_election_type_info() {
 /**
  * Alter existing election types.
  *
- * @param array &$types
+ * @param array $types
  *
  * @see hook_election_type_info()
  */

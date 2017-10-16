@@ -584,9 +584,8 @@ function election_candidate_form_election_post_form_alter(&$form, &$form_state) 
     '#default_value' => isset($post->nstatus_inheritance) ? $post->nstatus_inheritance : ELECTION_POST_STATUS_INHERIT,
     '#options' => array(
       ELECTION_POST_STATUS_INHERIT => t('Inherited (currently: %status)', array(
-          '%status' => strip_tags($election_nstatus),
-        )
-      ),
+        '%status' => strip_tags($election_nstatus),
+      )),
       ELECTION_POST_STATUS_CLOSED => t('Closed'),
     ),
     '#weight' => 20,
@@ -662,10 +661,10 @@ function election_candidate_delete_multiple(array $candidate_ids) {
 /**
  * Wrapper function to allow deleting an individual election.
  *
- * @see election_candidate_delete_multiple()
- *
  * @param mixed $candidate_id
  *   Single candidate ID.
+ *
+ * @see election_candidate_delete_multiple()
  */
 function election_candidate_delete($candidate_id) {
   return election_candidate_delete_multiple(array($candidate_id));

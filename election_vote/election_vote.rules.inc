@@ -151,14 +151,14 @@ function election_vote_rules_action_info() {
  * This will only have an effect if it is called in reaction to the Rules event
  * 'Before granting access to vote', which is invoked in election_vote_access().
  *
- * @see election_vote_access()
- *
  * @param object $post
  *   The election post.
  * @param object $account
  *   The user account.
  * @param string $explanation
  *   An explanation to the user of why voting was denied.
+ *
+ * @see election_vote_access()
  */
 function election_vote_deny_access($post, $account, $explanation) {
   $grants = &drupal_static('election_vote_grants', array());

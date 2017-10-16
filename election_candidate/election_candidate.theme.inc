@@ -12,7 +12,7 @@
  * - $candidate
  * - $election
  * - $view_mode
- * - $page
+ * - $page.
  *
  * @see election-candidate.tpl.php
  */

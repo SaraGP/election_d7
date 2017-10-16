@@ -83,8 +83,6 @@ function election_export_access($op, stdClass $election, $account = NULL) {
 /**
  * Generate ZIP archive of results files, for all the posts in an election.
  *
- * @see election_export_post()
- *
  * @param object $election
  *   The election entity.
  * @param string $destination
@@ -95,6 +93,8 @@ function election_export_access($op, stdClass $election, $account = NULL) {
  *
  * @return string
  *   The URI of the generated results archive file.
+ *
+ * @see election_export_post()
  */
 function election_export_election(stdClass $election, $destination = NULL, array $options = array()) {
   if (empty($destination)) {

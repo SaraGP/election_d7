@@ -2,6 +2,10 @@
 
 /**
  * @file
+ * Class ElectionCandidateCrudTestCase.
+ */
+
+/**
  * Test the Election Candidate module for basic CRUD functionality.
  */
 class ElectionCandidateCrudTestCase extends DrupalWebTestCase {

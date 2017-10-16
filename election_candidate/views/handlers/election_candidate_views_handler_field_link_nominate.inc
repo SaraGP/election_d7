@@ -2,6 +2,10 @@
 
 /**
  * @file
+ * Class election_candidate_views_handler_field_link_nominate.
+ */
+
+/**
  * Field handler to present a link to an election post's nomination form.
  */
 class election_candidate_views_handler_field_link_nominate extends views_handler_field {

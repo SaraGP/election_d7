@@ -59,6 +59,7 @@ class ElectionUnitTestCase extends DrupalUnitTestCase {
     $this->assertIdentical(_election_normalize_datetime(array('date' => 'Nov 24, 2016', 'time' => '12:00')), strtotime('Nov 24, 2016 12:00'), '_election_normalize_datetime() works for array input with date and time.', 'Unit');
     $this->assertIdentical(_election_normalize_datetime(array('date' => 'Nov 24, 2016')), strtotime('Nov 24, 2016'), '_election_normalize_datetime() works for array input without time.', 'Unit');
     $this->assertIdentical(_election_normalize_datetime(array('time' => '12:00')), FALSE, '_election_normalize_datetime() works for array input without date.', 'Unit');
+    $this->assertIdentical(_election_normalize_datetime(array('date' => '')), FALSE, '_election_normalize_datetime() works for array input with empty date.', 'Unit');
     $this->assertIdentical(_election_normalize_datetime(''), FALSE, '_election_normalize_datetime() works for empty string input.', 'Unit');
     $this->assertIdentical(_election_normalize_datetime('Nov 24, 2016'), strtotime('Nov 24, 2016'), '_election_normalize_datetime() works for non-empty string input.', 'Unit');
   }

@@ -959,7 +959,7 @@ function _election_normalize_datetime($datetime) {
     return (int) $datetime;
   }
   elseif (is_array($datetime)) {
-    if (!isset($datetime['date'])) {
+    if (empty($datetime['date'])) {
       return FALSE;
     }
     return strtotime($datetime['date'] . ' ' . (!empty($datetime['time']) ? $datetime['time'] : '00:00'));

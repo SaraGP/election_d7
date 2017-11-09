@@ -44,6 +44,7 @@ function election_post_form(array $form, array &$form_state, stdClass $post, $el
   $form['title'] = array(
     '#type' => 'textfield',
     '#title' => t('Title'),
+    '#maxlength' => 255,
     '#default_value' => isset($post->title) ? $post->title : '',
     '#required' => TRUE,
   );

@@ -18,6 +18,7 @@ function election_form($form, &$form_state, stdClass $election) {
   $form['title'] = array(
     '#type' => 'textfield',
     '#title' => t('Title'),
+    '#maxlength' => 255,
     '#default_value' => isset($election->title) ? $election->title : '',
     '#required' => TRUE,
   );

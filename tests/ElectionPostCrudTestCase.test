@@ -59,8 +59,13 @@ class ElectionPostCrudTestCase extends DrupalWebTestCase {
         'title' => $this->randomString(),
       ));
       election_save($election);
+
+      // Test the post edit page.
+      $this->drupalGet('election/' . $election->election_id . '/add-post');
+      $this->assertFieldByXPath("//input[@id='edit-title'][@maxlength='255']", NULL, 'Title field has @maxlength of 255.');
+
       // Create a new post in the election with a random title.
-      $post = $this->helperElectionPostCreateUi($election, $this->randomString());
+      $post = $this->helperElectionPostCreateUi($election, $this->randomString(255));
       // Update the post's title and published status.
       $post = $this->helperElectionPostUpdateUi($post, array(
         'title' => $this->randomString(),

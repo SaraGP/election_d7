@@ -55,8 +55,13 @@ class ElectionCrudTestCase extends DrupalWebTestCase {
     foreach (election_types() as $bundle => $type) {
       // Check that the "Add new" link exists for each bundle.
       $this->assertLink(t('Add new !post_name', array('!post_name' => $type['name'])));
+
+      // Test the election edit page.
+      $this->drupalGet('elections/add/' . $bundle);
+      $this->assertFieldByXPath("//input[@id='edit-title'][@maxlength='255']", NULL, 'Title field has @maxlength of 255.');
+
       // Create a new election with a random title.
-      $election = $this->helperElectionCreateUi($bundle, $this->randomString());
+      $election = $this->helperElectionCreateUi($bundle, $this->randomString(255));
       // Update the election's title and published status.
       $election = $this->helperElectionUpdateUi($election, array(
         'title' => $this->randomString(),

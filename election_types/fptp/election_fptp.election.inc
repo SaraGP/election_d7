@@ -13,6 +13,7 @@ function election_fptp_election_type_info() {
     'fptp' => array(
       'name' => t('FPTP election'),
       'description' => t('A First-past-the-post election: the candidate(s) with the greatest number of votes wins.'),
+      'post name' => t('position'),
       'has candidates' => TRUE,
       'may anonymize' => TRUE,
       'vote form' => 'election_fptp_vote_form',

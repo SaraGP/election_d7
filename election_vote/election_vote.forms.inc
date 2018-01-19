@@ -199,6 +199,7 @@ function election_vote_undo_form_submit($form, &$form_state) {
   catch (Exception $e) {
     $transaction->rollback();
     watchdog_exception('election_vote', $e, NULL, WATCHDOG_ERROR);
+    drupal_set_message($e->getMessage, 'error');
   }
 
   if ($success) {
@@ -321,6 +322,7 @@ function election_vote_form_abstain($form, &$form_state) {
   catch (Exception $e) {
     $transaction->rollback();
     watchdog_exception('election_vote', $e, NULL, WATCHDOG_ERROR);
+    drupal_set_message($e->getMessage, 'error');
   }
 
   if ($success) {
@@ -404,6 +406,7 @@ function election_vote_form_vote($form, &$form_state) {
   catch (Exception $e) {
     $transaction->rollback();
     watchdog_exception('election_vote', $e, NULL, WATCHDOG_ERROR);
+    drupal_set_message($e->getMessage, 'error');
   }
 
   if ($success) {

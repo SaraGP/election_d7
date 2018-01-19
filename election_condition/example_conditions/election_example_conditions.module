@@ -16,6 +16,7 @@
  *   An array of allowed domains.
  *
  * @return bool
+ *   Whether the email address ends in one of the domains.
  */
 function election_example_conditions_check_mail_domain($post, $account, array $data) {
   if ($account->uid == 0 || !$account->mail) {

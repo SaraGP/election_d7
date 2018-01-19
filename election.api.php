@@ -63,6 +63,7 @@ function hook_election_type_info() {
  * Alter existing election types.
  *
  * @param array $types
+ *   An array of election types.
  *
  * @see hook_election_type_info()
  */

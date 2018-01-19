@@ -6,7 +6,7 @@
  */
 
 /**
- * Test the Election Vote module for access against there being enough candidates for a post.
+ * Test the Election Vote module for whether there are enough candidates.
  */
 class ElectionVoteAccessCandidatesTestCase extends ElectionWebTestCase {
 

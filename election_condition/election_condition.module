@@ -190,6 +190,7 @@ function election_condition_entity_delete($entity, $type) {
  * @param object $account
  *
  * @return bool
+ *   The result of the condition.
  */
 function election_condition_test(array $condition, $post, $account) {
   if (!empty($condition['file'])) {

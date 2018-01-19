@@ -109,9 +109,9 @@ function election_vote_schema() {
       // Note that multiple ballots can be cast per UID. This is partly because
       // voting by anonymous users is supported (where the UID is always 0), and
       // partly because users may be allowed to 'undo' their previous vote and
-      // vote again (the 'value' of the previous ballot is then set to 0). So the
-      // uniqueness of votes is ensured in PHP code rather than at the database
-      // level. See <https://www.drupal.org/node/2627710>.
+      // vote again (the 'value' of the previous ballot is then set to 0). So
+      // the uniqueness of votes is ensured in PHP code rather than at the
+      // database level. See <https://www.drupal.org/node/2627710>.
       'uid' => array(
         'description' => 'The {users}.uid of the voter. NULL means the user is not stored to maintain anonimity.',
         'type' => 'int',
@@ -271,7 +271,9 @@ function election_vote_update_7005() {
 }
 
 /**
- * Remove the one_vote_per_person unique index (see https://drupal.org/node/2627710 for more detail).
+ * Remove the one_vote_per_person unique index.
+ *
+ * @see https://drupal.org/node/2627710
  */
 function election_vote_update_7006() {
   if (db_index_exists('election_ballot', 'one_vote_per_person')) {

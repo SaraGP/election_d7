@@ -149,7 +149,8 @@ function election_referendum_count_votes_by_answer($post, $answer) {
   $query = db_select('election_vote', 'ev')
     ->condition('ev.post_id', $post->post_id)
     ->condition('ev.answer', $answer);
-  // If anonymize not set, undo is possible, so we need to discard votes with value of zero.
+  // If anonymize not set, undo is possible, so we need to discard votes with
+  // value of zero.
   if (empty($post->election->settings['anonymize'])) {
     $query->join('election_ballot', 'eb', 'eb.ballot_id = ev.ballot_id');
     $query->addExpression('SUM(eb.value)');

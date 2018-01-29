@@ -93,7 +93,7 @@ function template_preprocess_election_statistics(&$variables) {
 
       $post_totals = isset($totals['posts'][$post_id]) ? $totals['posts'][$post_id] : FALSE;
 
-      $rows[] = array(
+      $rows[$post_id] = array(
         'post' => l($post->title, election_post_uri_path($post)),
         'voters' => $post_totals ? number_format($post_totals['voters']) : 0,
         'ballots' => $post_totals ? number_format($post_totals['ballots']) : 0,

@@ -96,6 +96,19 @@ function election_results_page(stdClass $post) {
   drupal_set_title(t('Results: %post', array('%post' => $post->title)), PASS_THROUGH);
   election_set_breadcrumb($election);
 
+  return election_results_view($post);
+}
+
+/**
+ * Page callback helper: Return results for an election post.
+ *
+ * @param object $post
+ *   The election post object.
+ *
+ * @return array
+ *   A render array containing the results for an election post.
+ */
+function election_results_view(stdClass $post) {
   $totals = election_results_get_totals($post);
 
   $output = array();

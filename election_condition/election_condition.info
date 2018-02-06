@@ -1,8 +1,6 @@
 name = Election Condition
-description = "Allows other modules to define voter eligibility conditions in
-code. Conditions can then be assigned to election posts via the UI. For simpler
-conditions, you may want to use Rules."
-package = Election
+description = Allows other modules to define voter eligibility conditions in code. Conditions can then be assigned to election posts via the UI. For simpler conditions, you may want to use Rules.
 core = 7.x
+package = Election
 dependencies[] = election
 dependencies[] = election_post

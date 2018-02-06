@@ -1,7 +1,7 @@
 name = Election Results
-description = "Find out the result of an election."
-package = Election
+description = Find out the result of an election.
 core = 7.x
+package = Election
 dependencies[] = election
 dependencies[] = election_post
 dependencies[] = election_vote

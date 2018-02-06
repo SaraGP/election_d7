@@ -1,7 +1,7 @@
 name = Election type: Referendum
-description = "Provides a Referendum election type."
-package = Election types
+description = Provides a Referendum election type.
 core = 7.x
+package = Election types
 dependencies[] = election
 dependencies[] = election_post
 dependencies[] = election_vote

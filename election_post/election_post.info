@@ -1,7 +1,7 @@
 name = Election Post
-description = "Allows elections to have posts."
-package = Election
+description = Allows elections to have posts.
 core = 7.x
+package = Election
 dependencies[] = election
 files[] = election-post.controller.inc
 files[] = views/handlers/election_post_views_handler_field_link.inc

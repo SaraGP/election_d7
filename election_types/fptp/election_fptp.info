@@ -1,7 +1,7 @@
 name = Election type: First Past The Post
-description = "A first-past-the-post election type: the candidate(s) with the most votes wins."
-package = Election types
+description = A first-past-the-post election type: the candidate(s) with the most votes wins.
 core = 7.x
+package = Election types
 dependencies[] = election
 dependencies[] = election_post
 dependencies[] = election_candidate

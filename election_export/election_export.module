@@ -253,10 +253,12 @@ function election_export_post(stdClass $post, $destination = NULL, array $option
 
   $output = "################################################\n";
 
-  $output .= '# ' . t(
+  $output .= '# ';
+  $output .= t(
     'Ballot file generated on !date',
     array('!date' => format_date(REQUEST_TIME, 'custom', 'Y-m-d H:i:s'))
-  ) . " #\n";
+  );
+  $output .= " #\n";
 
   $output .= "################################################\n";
 
@@ -279,7 +281,10 @@ function election_export_post(stdClass $post, $destination = NULL, array $option
     $output .= '-' . implode(' -', $withdrawn) . "\n";
   }
 
-  $output .= "# " . t('Votes are listed below. Each line is in the format:') . "\n#    ";
+  $output .= "# ";
+  $output .= t('Votes are listed below. Each line is in the format:');
+  $output .= "\n#    ";
+
   if ($options['include ballot ids']) {
     $output .= '(BALLOT_ID) ';
   }

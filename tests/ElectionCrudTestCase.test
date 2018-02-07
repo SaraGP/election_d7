@@ -30,6 +30,7 @@ class ElectionCrudTestCase extends DrupalWebTestCase {
       'election_referendum',
       'election_stv',
       'election_test',
+      'election_cron',
     );
     parent::setUp($modules);
   }
@@ -93,6 +94,22 @@ class ElectionCrudTestCase extends DrupalWebTestCase {
       // Hook implementations in the election_test module save values into
       // variable election_test which are tested by the assertions below.
       $test_string = $this->randomString();
+
+      // Set election_cron_last before the nominations are scheduled to open.
+      // Since all opens and closes are in the past, all four hooks should fire
+      // when election_cron_cron() is manually run.
+      variable_set('election_test', $test_string);
+      variable_set('election_cron_last', REQUEST_TIME - 5000);
+      election_cron_cron();
+      $this_test = $test_string;
+      // Do not test nominations for elections types without condidates.
+      if (!empty($election->type_info['has candidates'])) {
+        $this_test .= ' election_test_election_nominations_open ' . $election->election_id . '-' . TRUE . ' election_test_election_nominations_close ' . $election->election_id . '-' . TRUE;
+      }
+      $this_test .= ' election_test_election_voting_open ' . $election->election_id . '-' . TRUE . ' election_test_election_voting_close ' . $election->election_id . '-' . TRUE;
+      $this->assertIdentical(variable_get('election_test'), $this_test, 'hook_election_(nominations|voting)_(open|close)() fire when election_cron_cron() runs.');
+      variable_del('election_cron_last');
+
       // Test voting first so that it ends with voting closed, ready to test
       // nominations without errors relating to voting being scheduled.
       foreach (array('voting', 'nominations') as $stage) {

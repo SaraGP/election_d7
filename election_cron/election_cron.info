@@ -1,0 +1,5 @@
+name = Election Cron
+description = Provides API hooks for scheduled actions.
+core = 7.x
+package = Election
+dependencies[] = election

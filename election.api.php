@@ -73,3 +73,83 @@ function hook_election_type_info_alter(array &$types) {
     $types['referendum']['export'] = TRUE;
   }
 }
+
+/**
+ * Runs when nominations opens.
+ *
+ * For scheduled changes, this hook will run only if election_cron module is
+ * enabled. It will run the next time cron runs after the scheduled time.
+ *
+ * @param int $election_id
+ *   The election ID.
+ * @param bool $scheduled
+ *   TRUE if a scheduled change, FALSE if manual.
+ */
+function hook_election_nominations_open($election_id, $scheduled) {
+  watchdog('election', 'Nominations opened @how for @type %title (@id).', array(
+    '@how' => $scheduled ? 'by schedule' : 'manually',
+    '@type' => $election->type_info['name'],
+    '%title' => $election->title,
+    '@id' => $election->election_id,
+  ));
+}
+
+/**
+ * Runs when nominations closes.
+ *
+ * For scheduled changes, this hook will run only if election_cron module is
+ * enabled. It will run the next time cron runs after the scheduled time.
+ *
+ * @param int $election_id
+ *   The election ID.
+ * @param bool $scheduled
+ *   TRUE if a scheduled change, FALSE if manual.
+ */
+function hook_election_nominations_close($election_id, $scheduled) {
+  watchdog('election', 'Nominations closed @how for @type %title (@id).', array(
+    '@how' => $scheduled ? 'by schedule' : 'manually',
+    '@type' => $election->type_info['name'],
+    '%title' => $election->title,
+    '@id' => $election->election_id,
+  ));
+}
+
+/**
+ * Runs when voting opens.
+ *
+ * For scheduled changes, this hook will run only if election_cron module is
+ * enabled. It will run the next time cron runs after the scheduled time.
+ *
+ * @param int $election_id
+ *   The election ID.
+ * @param bool $scheduled
+ *   TRUE if a scheduled change, FALSE if manual.
+ */
+function hook_election_voting_open($election_id, $scheduled) {
+  watchdog('election', 'Voting opened @how for @type %title (@id).', array(
+    '@how' => $scheduled ? 'by schedule' : 'manually',
+    '@type' => $election->type_info['name'],
+    '%title' => $election->title,
+    '@id' => $election->election_id,
+  ));
+}
+
+/**
+ * Runs when voting closes.
+ *
+ * For scheduled changes, this hook will run only if election_cron module is
+ * enabled. It will run the next time cron runs after the scheduled time.
+ *
+ * @param int $election_id
+ *   The election ID.
+ * @param bool $scheduled
+ *   TRUE if a scheduled change, FALSE if manual.
+ */
+function hook_election_voting_close($election_id, $scheduled) {
+  watchdog('election', 'Voting closed @how for @type %title (@id).', array(
+    '@how' => $scheduled ? 'by schedule' : 'manually',
+    '@type' => $election->type_info['name'],
+    '%title' => $election->title,
+    '@id' => $election->election_id,
+  ));
+}

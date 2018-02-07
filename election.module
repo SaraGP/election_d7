@@ -554,6 +554,23 @@ function election_election_update($election) {
   }
 
   if (isset($election->original)) {
+    foreach (array('nominations', 'voting') as $stage) {
+      $function = 'election_' . $stage . '_open';
+      $original_open = $function($election->original);
+      $new_open = $function($election);
+      // Invoke hook_election_nominations_open() and
+      // hook_election_voting_open().
+      if (!$original_open && $new_open) {
+        module_invoke_all('election_' . $stage . '_open', $election->election_id, FALSE);
+      }
+      // Invoke hook_election_nominations_close() and
+      // hook_election_voting_close().
+      elseif ($original_open && !$new_open) {
+        module_invoke_all('election_' . $stage . '_close', $election->election_id, FALSE);
+      }
+      unset($function, $original_open, $new_open);
+    }
+
     $type = _election_type_get_info($election->type);
 
     // Log changes of voting status.

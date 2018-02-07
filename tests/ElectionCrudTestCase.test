@@ -73,8 +73,8 @@ class ElectionCrudTestCase extends DrupalWebTestCase {
       if (!empty($election->type_info['has candidates'])) {
         $election = $this->helperElectionUpdateUi($election, array(
           'nstatus' => 0,
-          'nopen_time[date]' => time() - 4000,
-          'nclose_time[date]' => time() - 3000,
+          'nopen_time[date]' => REQUEST_TIME - 4000,
+          'nclose_time[date]' => REQUEST_TIME - 3000,
         ));
         $this->assertText('Nominations schedule Opening time is in the past.');
         $this->assertText('Nominations schedule Closing time is in the past.');
@@ -82,8 +82,8 @@ class ElectionCrudTestCase extends DrupalWebTestCase {
       // Voting dates.
       $election = $this->helperElectionUpdateUi($election, array(
         'vstatus' => 0,
-        'vopen_time[date]' => time() - 2000,
-        'vclose_time[date]' => time() - 1000,
+        'vopen_time[date]' => REQUEST_TIME - 2000,
+        'vclose_time[date]' => REQUEST_TIME - 1000,
       ));
       $this->assertText('Voting schedule Opening time is in the past.');
       $this->assertText('Voting schedule Closing time is in the past.');

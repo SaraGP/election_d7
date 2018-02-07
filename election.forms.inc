@@ -224,7 +224,7 @@ function election_form_validate($form, &$form_state) {
       if (isset($form_state['values'][$key . $open_close . '_time'])) {
         $time_old = _election_normalize_datetime($form[$value][$key . 'schedule'][$key . $open_close . '_time']['#default_value']);
         $time_new = _election_normalize_datetime($form_state['values'][$key . $open_close . '_time']);
-        if (is_int($time_new) && $time_old !== $time_new && $time_new < time()) {
+        if (is_int($time_new) && $time_old !== $time_new && $time_new < REQUEST_TIME) {
           $message = t('@what @which is in the past.', array(
             '@what' => $form[$value][$key . 'schedule']['#title'],
             '@which' => $form[$value][$key . 'schedule'][$key . $open_close . '_time']['#title'],

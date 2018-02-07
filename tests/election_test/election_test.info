@@ -1,0 +1,4 @@
+name = Election Test
+description = Module used only by Election module tests.
+core = 7.x
+hidden = TRUE
